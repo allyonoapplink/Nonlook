@@ -1,22 +1,1419 @@
-<div class="menu">
-  <a href="index.html">🏠 Home</a>
-  <a href="about.html">🟣 About</a>
-  <a href="contact.html">🔵 Contact</a>
-  <a href="disclaimer.html">🔴 Disclaimer</a>
-</div>
-.menu{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  flex-wrap:wrap;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>MyConnect – Private Messaging</title>
+    <meta name="description" content="MyConnect is an original, private messaging platform. Chat, share, and connect with complete control over your data." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+    <style>
+        /* ----- RESET & BASE ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Inter", -apple-system, system-ui, sans-serif;
+            background: #f6f8fc;
+            color: #0f1a2e;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        body.dark {
+            background: #0e141f;
+            color: #eef2f7;
+        }
+        .app-wrapper {
+            width: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            background: #ffffff;
+            min-height: 100vh;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        body.dark .app-wrapper {
+            background: #121a2a;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+        }
+        /* ----- SCROLLBAR (clean) ----- */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 12px;
+        }
+        body.dark ::-webkit-scrollbar-thumb {
+            background: #2d3a52;
+        }
 
-.menu a{
-  background:#fff;
-  padding:10px 20px;
-  border-radius:30px;
-  text-decoration:none;
-  color:#000;
-  font-weight:bold;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
+        /* ----- TYPOGRAPHY ----- */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+        .text-sm {
+            font-size: 0.875rem;
+        }
+        .text-xs {
+            font-size: 0.75rem;
+        }
+        .text-muted {
+            color: #6b7a93;
+        }
+        body.dark .text-muted {
+            color: #8899b5;
+        }
+
+        /* ----- BUTTONS ----- */
+        .btn-primary {
+            background: #2a7de1;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background: #1f6bc9;
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #2a7de1;
+            border: 1.5px solid #2a7de1;
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-outline:hover {
+            background: #eef4fe;
+        }
+        body.dark .btn-outline {
+            color: #6a9ef0;
+            border-color: #6a9ef0;
+        }
+        body.dark .btn-outline:hover {
+            background: #1f2a40;
+        }
+        .btn-danger {
+            background: #e53e3e;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .btn-danger:hover {
+            background: #c53030;
+        }
+
+        /* ----- CARDS / SECTIONS ----- */
+        .card {
+            background: #f9fafc;
+            border-radius: 20px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            border: 1px solid #edf2f7;
+            transition: background 0.15s;
+        }
+        body.dark .card {
+            background: #1a2335;
+            border-color: #283244;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        .card-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .card-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+        body.dark .card-row {
+            border-bottom-color: #283244;
+        }
+        .card-row:last-child {
+            border-bottom: 0;
+        }
+
+        /* ----- INPUTS ----- */
+        .input-group {
+            margin-bottom: 16px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #4a5a72;
+            margin-bottom: 4px;
+        }
+        body.dark .input-group label {
+            color: #9aadc7;
+        }
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1.5px solid #e2e8f0;
+            background: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: 0.15s;
+            color: #0f1a2e;
+        }
+        body.dark .input-group input,
+        body.dark .input-group textarea,
+        body.dark .input-group select {
+            background: #1a2335;
+            border-color: #2d3a52;
+            color: #eef2f7;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #2a7de1;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 125, 225, 0.15);
+        }
+        .input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .input-group .hint {
+            font-size: 0.7rem;
+            color: #7a8aa3;
+            margin-top: 4px;
+        }
+        body.dark .input-group .hint {
+            color: #6a7f9e;
+        }
+
+        /* ----- TOP BAR ----- */
+        .topbar {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border-bottom: 1px solid #edf2f7;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+        body.dark .topbar {
+            background: #121a2a;
+            border-bottom-color: #1f2a3e;
+        }
+        .topbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.3px;
+        }
+        .topbar .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+        .topbar .actions {
+            display: flex;
+            gap: 6px;
+        }
+        .topbar .actions button {
+            background: transparent;
+            border: none;
+            padding: 8px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #2a3a50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.15s;
+        }
+        body.dark .topbar .actions button {
+            color: #b0c4e0;
+        }
+        .topbar .actions button:hover {
+            background: #edf2f7;
+        }
+        body.dark .topbar .actions button:hover {
+            background: #1f2a40;
+        }
+        .topbar .actions button svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ----- BOTTOM NAV (original) ----- */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #ffffff;
+            border-top: 1px solid #edf2f7;
+            padding: 6px 0 10px 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 20;
+        }
+        body.dark .bottom-nav {
+            background: #121a2a;
+            border-top-color: #1f2a3e;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: transparent;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            color: #6b7a93;
+            transition: 0.15s;
+            font-size: 0.6rem;
+            font-weight: 500;
+            gap: 2px;
+            text-decoration: none;
+        }
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .nav-item.active {
+            color: #2a7de1;
+        }
+        .nav-item.active svg {
+            stroke: #2a7de1;
+            fill: #2a7de1;
+            fill-opacity: 0.08;
+        }
+        body.dark .nav-item {
+            color: #7a8fa8;
+        }
+        body.dark .nav-item.active {
+            color: #5a8fe0;
+        }
+        body.dark .nav-item.active svg {
+            stroke: #5a8fe0;
+        }
+
+        /* ----- PAGE CONTAINERS ----- */
+        .page {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 16px 80px 16px;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+        body.dark .page {
+            background: #121a2a;
+        }
+        .page.active {
+            display: block;
+        }
+        .page-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 16px 0 12px 0;
+        }
+        .page-sub {
+            font-size: 0.9rem;
+            color: #6b7a93;
+            margin-bottom: 20px;
+        }
+        body.dark .page-sub {
+            color: #8899b5;
+        }
+
+        /* ----- SEARCH BAR ----- */
+        .search-bar {
+            background: #f1f4f9;
+            border-radius: 40px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            border: 1px solid transparent;
+            transition: 0.15s;
+        }
+        body.dark .search-bar {
+            background: #1a2335;
+            border-color: #283244;
+        }
+        .search-bar:focus-within {
+            border-color: #2a7de1;
+            background: #ffffff;
+        }
+        body.dark .search-bar:focus-within {
+            background: #1a2335;
+        }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            padding: 8px 0;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+            color: #0f1a2e;
+        }
+        body.dark .search-bar input {
+            color: #eef2f7;
+        }
+        .search-bar input::placeholder {
+            color: #8a9bb5;
+        }
+
+        /* ----- CHAT LIST ----- */
+        .chat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #edf2f7;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        body.dark .chat-item {
+            border-bottom-color: #1f2a3e;
+        }
+        .chat-item:active {
+            background: #f1f4f9;
+            border-radius: 12px;
+        }
+        body.dark .chat-item:active {
+            background: #1a2335;
+        }
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 40px;
+            background: #dce3ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #1a2a44;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        body.dark .chat-avatar {
+            background: #2a3a52;
+            color: #c0d0ea;
+        }
+        .chat-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .chat-info .name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .chat-info .msg-preview {
+            font-size: 0.8rem;
+            color: #6b7a93;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        body.dark .chat-info .msg-preview {
+            color: #8899b5;
+        }
+        .chat-meta {
+            text-align: right;
+            flex-shrink: 0;
+            font-size: 0.65rem;
+            color: #6b7a93;
+        }
+        body.dark .chat-meta {
+            color: #7a8fa8;
+        }
+
+        /* ----- CONTACT LIST ----- */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+        body.dark .contact-item {
+            border-bottom-color: #1f2a3e;
+        }
+        .contact-item .name {
+            font-weight: 500;
+        }
+        .contact-item .status {
+            font-size: 0.7rem;
+            color: #6b7a93;
+        }
+        body.dark .contact-item .status {
+            color: #8899b5;
+        }
+
+        /* ----- PROFILE ----- */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 60px;
+            background: #dce3ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1a2a44;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        body.dark .profile-avatar {
+            background: #2a3a52;
+            color: #c0d0ea;
+        }
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .profile-username {
+            color: #6b7a93;
+            font-size: 0.9rem;
+        }
+        body.dark .profile-username {
+            color: #8899b5;
+        }
+        .profile-bio {
+            text-align: center;
+            color: #2a3a50;
+            margin: 6px 0 12px 0;
+            font-size: 0.9rem;
+        }
+        body.dark .profile-bio {
+            color: #b0c4e0;
+        }
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        /* ----- SETTINGS GRID (original cards) ----- */
+        .settings-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .settings-card {
+            background: #f9fafc;
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: 1px solid #edf2f7;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        body.dark .settings-card {
+            background: #1a2335;
+            border-color: #283244;
+        }
+        .settings-card:active {
+            background: #edf2f7;
+        }
+        body.dark .settings-card:active {
+            background: #1f2a40;
+        }
+        .settings-card .icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2a7de1;
+            flex-shrink: 0;
+        }
+        .settings-card .icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .settings-card .content {
+            flex: 1;
+        }
+        .settings-card .content .title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .settings-card .content .desc {
+            font-size: 0.75rem;
+            color: #6b7a93;
+        }
+        body.dark .settings-card .content .desc {
+            color: #8899b5;
+        }
+        .settings-card .arrow {
+            color: #9aabc4;
+        }
+
+        /* ----- TOGGLE (original) ----- */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .toggle {
+            width: 44px;
+            height: 26px;
+            background: #d0d8e4;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .toggle.active {
+            background: #2a7de1;
+        }
+        .toggle .thumb {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 30px;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: 0.2s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+        .toggle.active .thumb {
+            left: 21px;
+        }
+
+        /* ----- MODAL / OVERLAY (original) ----- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: #ffffff;
+            border-radius: 28px;
+            max-width: 400px;
+            width: 100%;
+            padding: 24px 22px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+        body.dark .modal {
+            background: #1a2335;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+        .modal h2 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+        .modal .close-modal {
+            float: right;
+            background: transparent;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #6b7a93;
+        }
+        body.dark .modal .close-modal {
+            color: #8899b5;
+        }
+
+        /* ----- MESSAGE BUBBLES (original) ----- */
+        .msg-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 8px 0;
+        }
+        .msg-bubble {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            background: #f1f4f9;
+            color: #0f1a2e;
+            font-size: 0.9rem;
+            word-wrap: break-word;
+            position: relative;
+        }
+        body.dark .msg-bubble {
+            background: #1f2a40;
+            color: #eef2f7;
+        }
+        .msg-bubble.sent {
+            align-self: flex-end;
+            background: #2a7de1;
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+        .msg-bubble .time {
+            font-size: 0.6rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            display: block;
+            text-align: right;
+        }
+        .msg-bubble.sent .time {
+            color: #d0e0ff;
+        }
+
+        /* ----- SHARE DETAILS CHECKBOXES ----- */
+        .share-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+        }
+        .share-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #2a7de1;
+        }
+
+        /* ----- ADMIN (minimal) ----- */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .admin-stat {
+            background: #f1f4f9;
+            padding: 14px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        body.dark .admin-stat {
+            background: #1a2335;
+        }
+        .admin-stat .num {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* ----- RESPONSIVE TWEAKS ----- */
+        @media (max-width: 430px) {
+            .app-wrapper {
+                max-width: 100%;
+                border-radius: 0;
+            }
+            .modal {
+                border-radius: 20px;
+                padding: 20px 16px;
+            }
+        }
+        /* utilities */
+        .mt-2 {
+            margin-top: 12px;
+        }
+        .mb-2 {
+            margin-bottom: 12px;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-danger {
+            color: #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper" id="app">
+
+        <!-- ===== TOPBAR ===== -->
+        <header class="topbar" id="topbar">
+            <div class="logo">
+                <svg viewBox="0 0 32 32" fill="none" stroke="#2a7de1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="16" cy="16" r="12" />
+                    <path d="M8 16 L12 20 L20 12" />
+                    <path d="M20 16 L24 20" />
+                </svg>
+                <span>MyConnect</span>
+            </div>
+            <div class="actions">
+                <button id="themeToggle" aria-label="Toggle theme">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+                <button id="notificationBtn" aria-label="Notifications">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ===== PAGES ===== -->
+        <!-- HOME -->
+        <section class="page active" id="page-home">
+            <div class="page-title">Home</div>
+            <div class="search-bar">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="#6b7a93" stroke-width="2" fill="none"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" placeholder="Search conversations..." id="searchInput" />
+            </div>
+            <div id="recentChats">
+                <div class="chat-item" data-chat="user1">
+                    <div class="chat-avatar">A</div>
+                    <div class="chat-info"><div class="name">Alice</div><div class="msg-preview">Hey! How are you?</div></div>
+                    <div class="chat-meta">12:30</div>
+                </div>
+                <div class="chat-item" data-chat="user2">
+                    <div class="chat-avatar">B</div>
+                    <div class="chat-info"><div class="name">Bob</div><div class="msg-preview">See you tomorrow</div></div>
+                    <div class="chat-meta">11:15</div>
+                </div>
+                <div class="chat-item" data-chat="user3">
+                    <div class="chat-avatar">C</div>
+                    <div class="chat-info"><div class="name">Carol</div><div class="msg-preview">Thanks!</div></div>
+                    <div class="chat-meta">Yesterday</div>
+                </div>
+            </div>
+            <button class="btn-primary" id="newChatBtn" style="margin-top: 12px;">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="#fff" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Conversation
+            </button>
+        </section>
+
+        <!-- CHATS -->
+        <section class="page" id="page-chats">
+            <div class="page-title">Chats</div>
+            <div id="chatList">
+                <!-- dynamic -->
+            </div>
+        </section>
+
+        <!-- CONTACTS -->
+        <section class="page" id="page-contacts">
+            <div class="page-title">Contacts</div>
+            <div class="search-bar">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="#6b7a93" stroke-width="2" fill="none"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" placeholder="Search contacts..." id="contactSearch" />
+            </div>
+            <div id="contactList">
+                <div class="contact-item"><div class="chat-avatar">D</div><div><div class="name">David</div><div class="status">Online</div></div></div>
+                <div class="contact-item"><div class="chat-avatar">E</div><div><div class="name">Eva</div><div class="status">Last seen 1h ago</div></div></div>
+                <div class="contact-item"><div class="chat-avatar">F</div><div><div class="name">Frank</div><div class="status">Offline</div></div></div>
+            </div>
+        </section>
+
+        <!-- PROFILE -->
+        <section class="page" id="page-profile">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar">M</div>
+                <div class="profile-name" id="profileDisplayName">Me</div>
+                <div class="profile-username" id="profileUsername">@myconnect_user</div>
+                <div class="profile-bio" id="profileBio">Building connections.</div>
+                <div class="profile-actions">
+                    <button class="btn-outline" id="editProfileBtn" style="width:auto; padding:8px 16px;">Edit Profile</button>
+                    <button class="btn-outline" id="shareDetailsBtn" style="width:auto; padding:8px 16px;">Share My Details</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-row"><span>Account created</span><span>2025-01-15</span></div>
+                <div class="card-row"><span>Online status</span><span class="text-muted">Online</span></div>
+                <div class="card-row"><span>Last active</span><span class="text-muted">Now</span></div>
+            </div>
+            <button class="btn-outline w-full" id="settingsBtn" style="margin-top:8px;">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Settings
+            </button>
+        </section>
+
+        <!-- ===== SETTINGS PAGE (dedicated) ===== -->
+        <section class="page" id="page-settings">
+            <div class="page-title">Settings</div>
+            <div class="settings-grid">
+                <div class="settings-card" data-section="account"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5.34 18.66A7.97 7.97 0 0 1 12 16c2.52 0 4.76 1.16 6.22 2.98"/></svg></div><div class="content"><div class="title">Account</div><div class="desc">Profile, username, password</div></div><div class="arrow">›</div></div>
+                <div class="settings-card" data-section="privacy"><div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="content"><div class="title">Privacy</div><div class="desc">Visibility, blocking, read receipts</div></div><div class="arrow">›</div></div>
+                <div class="settings-card" data-section="security"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div><div class="content"><div class="title">Security</div><div class="desc">Password, sessions, 2-step</div></div><div class="arrow">›</div></div>
+                <div class="settings-card" data-section="notifications"><div class="icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="content"><div class="title">Notifications</div><div class="desc">Sounds, vibration, preview</div></div><div class="arrow">›</div></div>
+                <div class="settings-card" data-section="appearance"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><div class="content"><div class="title">Appearance</div><div class="desc">Light, dark, font size</div></div><div class="arrow">›</div></div>
+                <div class="settings-card" data-section="chat"><div class="icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="content"><div class="title">Chat Settings</div><div class="desc">Enter to send, media, archives</div></div><div class="arrow">›</div></div>
+                <div class="settings-card" data-section="data"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4v16h16V4z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="12" y2="12"/></svg></div><div class="content"><div class="title">Data & Storage</div><div class="desc">Cache, export, delete data</div></div><div class="arrow">›</div></div>
+                <div class="settings-card" data-section="help"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="content"><div class="title">Help & Support</div><div class="desc">Help center, report, privacy</div></div><div class="arrow">›</div></div>
+            </div>
+            <button class="btn-danger w-full" id="logoutBtn" style="margin-top:20px;">Sign Out</button>
+        </section>
+
+        <!-- ===== CHAT VIEW (dynamic) ===== -->
+        <section class="page" id="page-chat-view">
+            <div class="topbar" style="position:sticky;top:0;z-index:10;background:inherit;border-bottom:1px solid #edf2f7;">
+                <button id="backFromChat" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;color:#2a3a50;">‹</button>
+                <span style="font-weight:600;" id="chatPartnerName">User</span>
+                <span style="flex:1;"></span>
+                <button id="chatMoreBtn" style="background:transparent;border:none;cursor:pointer;">⋯</button>
+            </div>
+            <div id="messageContainer" style="flex:1;overflow-y:auto;padding:12px 0;display:flex;flex-direction:column;gap:6px;min-height:300px;">
+                <div class="msg-bubble">Hello! This is a test message.</div>
+                <div class="msg-bubble sent">Hi there! 👋</div>
+            </div>
+            <div style="display:flex;gap:8px;padding:8px 0;background:inherit;position:sticky;bottom:0;">
+                <input type="text" id="messageInput" placeholder="Type a message..." style="flex:1;padding:12px 16px;border-radius:40px;border:1.5px solid #e2e8f0;background:#fff;font-size:1rem;" />
+                <button id="sendMessageBtn" style="background:#2a7de1;border:none;border-radius:40px;padding:0 20px;color:#fff;font-weight:600;cursor:pointer;">Send</button>
+            </div>
+        </section>
+
+        <!-- ===== BOTTOM NAV (original) ===== -->
+        <nav class="bottom-nav" id="bottomNav">
+            <button class="nav-item active" data-page="home">
+                <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" data-page="chats">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Chats</span>
+            </button>
+            <button class="nav-item" data-page="contacts">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Contacts</span>
+            </button>
+            <button class="nav-item" data-page="profile">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5.34 18.66A7.97 7.97 0 0 1 12 16c2.52 0 4.76 1.16 6.22 2.98"/></svg>
+                <span>Profile</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <button class="close-modal" id="modalClose">✕</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- STATE -----
+            const state = {
+                currentPage: 'home',
+                theme: 'light',
+                user: {
+                    displayName: 'Me',
+                    username: '@myconnect_user',
+                    bio: 'Building connections.',
+                    about: 'I love connecting with people.',
+                    photo: null,
+                },
+                settings: {
+                    privacy: { profileVisibility: 'public', bioVisibility: 'public', onlineStatus: 'public', readReceipts: true },
+                    notifications: { messages: true, sound: true, vibration: true, preview: true },
+                    appearance: { theme: 'light', fontSize: 'medium' },
+                    chat: { enterToSend: true }
+                }
+            };
+
+            // ----- DOM REFS -----
+            const pages = {
+                home: document.getElementById('page-home'),
+                chats: document.getElementById('page-chats'),
+                contacts: document.getElementById('page-contacts'),
+                profile: document.getElementById('page-profile'),
+                settings: document.getElementById('page-settings'),
+                chatView: document.getElementById('page-chat-view'),
+            };
+            const navItems = document.querySelectorAll('.nav-item');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalBody = document.getElementById('modalBody');
+            const modalClose = document.getElementById('modalClose');
+
+            // ----- HELPERS -----
+            function showPage(name) {
+                Object.keys(pages).forEach(key => {
+                    pages[key].classList.toggle('active', key === name);
+                });
+                navItems.forEach(item => {
+                    item.classList.toggle('active', item.dataset.page === name);
+                });
+                state.currentPage = name;
+                // hide chat view if not active
+                if (name !== 'chatView') {
+                    pages.chatView.style.display = 'none';
+                } else {
+                    pages.chatView.style.display = 'flex';
+                    pages.chatView.style.flexDirection = 'column';
+                }
+                // hide settings if not active
+                if (name !== 'settings') {
+                    pages.settings.style.display = 'none';
+                } else {
+                    pages.settings.style.display = 'block';
+                }
+                // re-apply visibility
+                Object.keys(pages).forEach(key => {
+                    if (key !== 'chatView' && key !== 'settings') {
+                        pages[key].style.display = pages[key].classList.contains('active') ? 'block' : 'none';
+                    }
+                });
+                if (name === 'chatView') {
+                    pages.chatView.style.display = 'flex';
+                    pages.chatView.style.flexDirection = 'column';
+                } else {
+                    pages.chatView.style.display = 'none';
+                }
+                if (name === 'settings') {
+                    pages.settings.style.display = 'block';
+                } else {
+                    pages.settings.style.display = 'none';
+                }
+            }
+
+            function openModal(html) {
+                modalBody.innerHTML = html;
+                modalOverlay.classList.add('active');
+            }
+
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+            }
+
+            // ----- THEME -----
+            function setTheme(theme) {
+                state.theme = theme;
+                document.body.classList.toggle('dark', theme === 'dark');
+                // update toggle icon
+                const btn = document.getElementById('themeToggle');
+                if (btn) {
+                    btn.innerHTML = theme === 'dark' ?
+                        '<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' :
+                        '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+                }
+            }
+
+            // ----- RENDER PROFILE -----
+            function renderProfile() {
+                const u = state.user;
+                document.getElementById('profileDisplayName').textContent = u.displayName || 'Me';
+                document.getElementById('profileUsername').textContent = u.username || '@user';
+                document.getElementById('profileBio').textContent = u.bio || 'No bio';
+                const avatar = document.getElementById('profileAvatar');
+                if (u.photo) {
+                    avatar.innerHTML = `<img src="${u.photo}" alt="avatar" />`;
+                } else {
+                    avatar.textContent = (u.displayName || 'M')[0].toUpperCase();
+                }
+            }
+
+            // ----- EDIT PROFILE MODAL -----
+            function openEditProfile() {
+                const u = state.user;
+                openModal(`
+                    <h2>Edit Profile</h2>
+                    <div class="input-group"><label>Display Name</label><input type="text" id="editDisplayName" value="${u.displayName || ''}" /></div>
+                    <div class="input-group"><label>Username</label><input type="text" id="editUsername" value="${u.username || ''}" /></div>
+                    <div class="input-group"><label>Bio</label><textarea id="editBio" rows="2">${u.bio || ''}</textarea></div>
+                    <div class="input-group"><label>About</label><textarea id="editAbout" rows="2">${u.about || ''}</textarea></div>
+                    <div class="input-group"><label>Profile Photo URL</label><input type="text" id="editPhoto" value="${u.photo || ''}" placeholder="https://example.com/photo.jpg" /></div>
+                    <button class="btn-primary" id="saveProfileBtn">Save Changes</button>
+                `);
+                document.getElementById('saveProfileBtn').addEventListener('click', function() {
+                    state.user.displayName = document.getElementById('editDisplayName').value.trim() || 'Me';
+                    state.user.username = document.getElementById('editUsername').value.trim() || '@user';
+                    state.user.bio = document.getElementById('editBio').value.trim() || '';
+                    state.user.about = document.getElementById('editAbout').value.trim() || '';
+                    state.user.photo = document.getElementById('editPhoto').value.trim() || null;
+                    renderProfile();
+                    closeModal();
+                });
+            }
+
+            // ----- SHARE DETAILS MODAL -----
+            function openShareDetails() {
+                const u = state.user;
+                openModal(`
+                    <h2>Share My Details</h2>
+                    <p class="text-muted" style="margin-bottom:12px;">Select what you want to share:</p>
+                    <div class="share-option"><input type="checkbox" checked id="shareName" /> <label for="shareName">Name</label></div>
+                    <div class="share-option"><input type="checkbox" checked id="shareUsername" /> <label for="shareUsername">Username</label></div>
+                    <div class="share-option"><input type="checkbox" checked id="sharePhoto" /> <label for="sharePhoto">Profile photo</label></div>
+                    <div class="share-option"><input type="checkbox" checked id="shareBio" /> <label for="shareBio">Bio</label></div>
+                    <div class="share-option"><input type="checkbox" checked id="shareAbout" /> <label for="shareAbout">About</label></div>
+                    <div class="share-option"><input type="checkbox" id="shareContact" /> <label for="shareContact">Contact information</label></div>
+                    <div class="share-option"><input type="checkbox" id="shareWebsite" /> <label for="shareWebsite">Website/Social link</label></div>
+                    <hr style="margin:16px 0;border-color:#edf2f7;" />
+                    <p><strong>Review information before sharing</strong></p>
+                    <div style="background:#f1f4f9;padding:12px;border-radius:12px;margin:8px 0;font-size:0.9rem;">
+                        <div id="sharePreview">${u.displayName || 'Me'} · ${u.username || '@user'} · ${u.bio || ''}</div>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:12px;">
+                        <button class="btn-outline" id="cancelShareBtn" style="flex:1;">Cancel</button>
+                        <button class="btn-primary" id="confirmShareBtn" style="flex:1;">Share</button>
+                    </div>
+                `);
+                document.getElementById('cancelShareBtn').addEventListener('click', closeModal);
+                document.getElementById('confirmShareBtn').addEventListener('click', function() {
+                    const selected = [];
+                    if (document.getElementById('shareName').checked) selected.push('Name: ' + state.user.displayName);
+                    if (document.getElementById('shareUsername').checked) selected.push('Username: ' + state.user.username);
+                    if (document.getElementById('sharePhoto').checked) selected.push('Photo: ' + (state.user.photo || 'none'));
+                    if (document.getElementById('shareBio').checked) selected.push('Bio: ' + state.user.bio);
+                    if (document.getElementById('shareAbout').checked) selected.push('About: ' + state.user.about);
+                    if (document.getElementById('shareContact').checked) selected.push('Contact: (optional)');
+                    if (document.getElementById('shareWebsite').checked) selected.push('Website: (optional)');
+                    alert('Shared details:\n' + selected.join('\n'));
+                    closeModal();
+                });
+                // live preview
+                const inputs = document.querySelectorAll('#shareName, #shareUsername, #shareBio, #shareAbout, #sharePhoto, #shareContact, #shareWebsite');
+                inputs.forEach(inp => inp.addEventListener('change', function() {
+                    const preview = document.getElementById('sharePreview');
+                    const parts = [];
+                    if (document.getElementById('shareName').checked) parts.push(state.user.displayName || 'Me');
+                    if (document.getElementById('shareUsername').checked) parts.push(state.user.username || '@user');
+                    if (document.getElementById('shareBio').checked) parts.push(state.user.bio || '');
+                    if (document.getElementById('shareAbout').checked) parts.push(state.user.about || '');
+                    preview.textContent = parts.join(' · ') || 'Nothing selected';
+                }));
+            }
+
+            // ----- SETTINGS SECTION NAV -----
+            function openSettingsSection(section) {
+                const content = {
+                    account: `<h2>Account</h2>
+                        <div class="card"><div class="card-row"><span>Display Name</span><span>${state.user.displayName}</span></div>
+                        <div class="card-row"><span>Username</span><span>${state.user.username}</span></div>
+                        <div class="card-row"><span>Bio</span><span>${state.user.bio || '—'}</span></div>
+                        <div class="card-row"><span>About</span><span>${state.user.about || '—'}</span></div>
+                        <div class="card-row"><span>Account created</span><span>2025-01-15</span></div></div>
+                        <button class="btn-outline w-full" id="editFromAccount">Edit Profile</button>
+                        <button class="btn-danger w-full" style="margin-top:8px;" id="deleteAccountBtn">Delete Account</button>
+                    `,
+                    privacy: `<h2>Privacy</h2>
+                        <div class="card"><div class="card-row"><span>Profile visibility</span><select id="privacyProfile"><option value="public">Public</option><option value="contacts">Contacts</option><option value="private">Private</option></select></div>
+                        <div class="card-row"><span>Bio visibility</span><select id="privacyBio"><option value="public">Public</option><option value="contacts">Contacts</option><option value="private">Private</option></select></div>
+                        <div class="card-row"><span>Online status</span><select id="privacyOnline"><option value="public">Public</option><option value="contacts">Contacts</option><option value="private">Private</option></select></div>
+                        <div class="card-row"><span>Read receipts</span><div class="toggle active" id="toggleReadReceipts"><div class="thumb"></div></div></div></div>
+                        <button class="btn-primary" id="savePrivacyBtn">Save Privacy</button>
+                    `,
+                    security: `<h2>Security</h2>
+                        <div class="card"><div class="card-row"><span>Change password</span><button class="btn-outline" style="padding:4px 12px;width:auto;">Change</button></div>
+                        <div class="card-row"><span>Active sessions</span><span>1 (this device)</span></div>
+                        <div class="card-row"><span>Two-step verification</span><div class="toggle" id="toggle2FA"><div class="thumb"></div></div></div></div>
+                        <button class="btn-outline w-full">Sign out other devices</button>
+                    `,
+                    notifications: `<h2>Notifications</h2>
+                        <div class="card"><div class="card-row"><span>Message notifications</span><div class="toggle active" id="toggleMsgNotif"><div class="thumb"></div></div></div>
+                        <div class="card-row"><span>Sound</span><div class="toggle active" id="toggleSound"><div class="thumb"></div></div></div>
+                        <div class="card-row"><span>Vibration</span><div class="toggle active" id="toggleVibration"><div class="thumb"></div></div></div>
+                        <div class="card-row"><span>Notification preview</span><div class="toggle active" id="togglePreview"><div class="thumb"></div></div></div></div>
+                    `,
+                    appearance: `<h2>Appearance</h2>
+                        <div class="card"><div class="card-row"><span>Theme</span><select id="themeSelect"><option value="light">Light</option><option value="dark">Dark</option></select></div>
+                        <div class="card-row"><span>Font size</span><select id="fontSizeSelect"><option value="small">Small</option><option value="medium">Medium</option><option value="large">Large</option></select></div></div>
+                        <button class="btn-primary" id="saveAppearanceBtn">Save Appearance</button>
+                    `,
+                    chat: `<h2>Chat Settings</h2>
+                        <div class="card"><div class="card-row"><span>Enter to send</span><div class="toggle active" id="toggleEnterSend"><div class="thumb"></div></div></div>
+                        <div class="card-row"><span>Auto-download media</span><select><option>WiFi only</option><option>Always</option><option>Never</option></select></div>
+                        <div class="card-row"><span>Archived conversations</span><span>0</span></div></div>
+                        <button class="btn-danger w-full" style="margin-top:8px;">Clear all chats</button>
+                    `,
+                    data: `<h2>Data & Storage</h2>
+                        <div class="card"><div class="card-row"><span>Storage usage</span><span>12 MB</span></div>
+                        <div class="card-row"><span>Cached data</span><span>8 MB</span></div></div>
+                        <button class="btn-outline w-full" id="exportDataBtn">Export My Data</button>
+                        <button class="btn-danger w-full" style="margin-top:8px;" id="deleteDataBtn">Delete Personal Data</button>
+                    `,
+                    help: `<h2>Help & Support</h2>
+                        <div class="card"><div class="card-row"><span>Help Center</span><span>›</span></div>
+                        <div class="card-row"><span>Contact Support</span><span>›</span></div>
+                        <div class="card-row"><span>Report a problem</span><span>›</span></div>
+                        <div class="card-row"><span>Privacy Policy</span><span>›</span></div>
+                        <div class="card-row"><span>Terms of Service</span><span>›</span></div>
+                        <div class="card-row"><span>About MyConnect</span><span>v1.0</span></div></div>
+                    `
+                };
+                openModal(content[section] || '<p>Section not found</p>');
+                // toggle handlers
+                document.querySelectorAll('.toggle').forEach(t => {
+                    t.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                    });
+                });
+                // save privacy
+                const savePrivacy = document.getElementById('savePrivacyBtn');
+                if (savePrivacy) savePrivacy.addEventListener('click', function() {
+                    const p = document.getElementById('privacyProfile');
+                    const b = document.getElementById('privacyBio');
+                    const o = document.getElementById('privacyOnline');
+                    state.settings.privacy.profileVisibility = p ? p.value : 'public';
+                    state.settings.privacy.bioVisibility = b ? b.value : 'public';
+                    state.settings.privacy.onlineStatus = o ? o.value : 'public';
+                    alert('Privacy settings saved!');
+                    closeModal();
+                });
+                // appearance
+                const saveApp = document.getElementById('saveAppearanceBtn');
+                if (saveApp) saveApp.addEventListener('click', function() {
+                    const theme = document.getElementById('themeSelect').value;
+                    setTheme(theme);
+                    alert('Appearance updated!');
+                    closeModal();
+                });
+                // export data
+                const exportBtn = document.getElementById('exportDataBtn');
+                if (exportBtn) exportBtn.addEventListener('click', function() {
+                    const data = JSON.stringify(state.user, null, 2);
+                    const blob = new Blob([data], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'myconnect-data.json';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+                // delete data
+                const deleteData = document.getElementById('deleteDataBtn');
+                if (deleteData) deleteData.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to delete all your personal data? This cannot be undone.')) {
+                        alert('Data deletion request submitted.');
+                        closeModal();
+                    }
+                });
+                // delete account
+                const deleteAccount = document.getElementById('deleteAccountBtn');
+                if (deleteAccount) deleteAccount.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to permanently delete your account?')) {
+                        alert('Account deletion request submitted.');
+                        closeModal();
+                    }
+                });
+                // edit from account
+                const editFromAccount = document.getElementById('editFromAccount');
+                if (editFromAccount) {
+                    editFromAccount.addEventListener('click', function() {
+                        closeModal();
+                        openEditProfile();
+                    });
+                }
+            }
+
+            // ----- CHAT VIEW -----
+            function openChatView(partner) {
+                pages.chatView.style.display = 'flex';
+                pages.chatView.style.flexDirection = 'column';
+                document.getElementById('chatPartnerName').textContent = partner || 'User';
+                showPage('chatView');
+            }
+
+            // ----- EVENT BINDING -----
+            function init() {
+                // Theme toggle
+                document.getElementById('themeToggle').addEventListener('click', function() {
+                    setTheme(state.theme === 'light' ? 'dark' : 'light');
+                });
+                // Notification
+                document.getElementById('notificationBtn').addEventListener('click', function() {
+                    alert('🔔 No new notifications.');
+                });
+                // Navigation
+                navItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const page = this.dataset.page;
+                        if (page === 'profile') {
+                            renderProfile();
+                        }
+                        showPage(page);
+                    });
+                });
+                // Settings button
+                document.getElementById('settingsBtn').addEventListener('click', function() {
+                    showPage('settings');
+                });
+                // Settings cards
+                document.querySelectorAll('.settings-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const section = this.dataset.section;
+                        if (section) openSettingsSection(section);
+                    });
+                });
+                // Edit profile
+                document.getElementById('editProfileBtn').addEventListener('click', openEditProfile);
+                // Share details
+                document.getElementById('shareDetailsBtn').addEventListener('click', openShareDetails);
+                // New chat
+                document.getElementById('newChatBtn').addEventListener('click', function() {
+                    openChatView('New Chat');
+                });
+                // Chat items
+                document.querySelectorAll('.chat-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const name = this.querySelector('.name')?.textContent || 'User';
+                        openChatView(name);
+                    });
+                });
+                // Back from chat
+                document.getElementById('backFromChat').addEventListener('click', function() {
+                    showPage('chats');
+                });
+                // Send message
+                document.getElementById('sendMessageBtn').addEventListener('click', function() {
+                    const input = document.getElementById('messageInput');
+                    const text = input.value.trim();
+                    if (!text) return;
+                    const container = document.getElementById('messageContainer');
+                    const bubble = document.createElement('div');
+                    bubble.className = 'msg-bubble sent';
+                    bubble.innerHTML = text + '<span class="time">Just now</span>';
+                    container.appendChild(bubble);
+                    input.value = '';
+                    container.scrollTop = container.scrollHeight;
+                });
+                document.getElementById('messageInput').addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && state.settings.chat.enterToSend) {
+                        document.getElementById('sendMessageBtn').click();
+                    }
+                });
+                // Logout
+                document.getElementById('logoutBtn').addEventListener('click', function() {
+                    if (confirm('Sign out?')) {
+                        alert('Signed out.');
+                        location.reload();
+                    }
+                });
+                // Modal close
+                modalClose.addEventListener('click', closeModal);
+                modalOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeModal();
+                });
+                // Search
+                document.getElementById('searchInput').addEventListener('input', function() {
+                    const q = this.value.toLowerCase();
+                    document.querySelectorAll('.chat-item').forEach(item => {
+                        const name = item.querySelector('.name')?.textContent?.toLowerCase() || '';
+                        item.style.display = name.includes(q) ? 'flex' : 'none';
+                    });
+                });
+                // Contact search
+                document.getElementById('contactSearch').addEventListener('input', function() {
+                    const q = this.value.toLowerCase();
+                    document.querySelectorAll('.contact-item').forEach(item => {
+                        const name = item.querySelector('.name')?.textContent?.toLowerCase() || '';
+                        item.style.display = name.includes(q) ? 'flex' : 'none';
+                    });
+                });
+                // Init
+                setTheme('light');
+                renderProfile();
+                showPage('home');
+            }
+
+            document.addEventListener('DOMContentLoaded', init);
+        })();
+    </script>
+</body>
+</html>

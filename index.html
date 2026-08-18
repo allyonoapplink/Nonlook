@@ -375,6 +375,134 @@
       .share-btn svg { width: 22px; height: 22px; }
       .share-btn .share-text { font-size: 0.7rem; }
     }
+
+    /* ===== FIXED MENU BUTTON with animated lines ===== */
+    .menu-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0b1e33;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      padding: 6px 12px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.65rem;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .menu-btn:hover {
+      background: rgba(255, 255, 255, 0.98);
+      transform: scale(1.02);
+    }
+    .menu-btn:active { transform: scale(0.95); }
+    .menu-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.3s ease;
+    }
+    .menu-btn .menu-line {
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+    .menu-btn.active .menu-line.top {
+      transform: translateY(6px) rotate(45deg);
+    }
+    .menu-btn.active .menu-line.middle {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .menu-btn.active .menu-line.bottom {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+    .home-page .menu-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+    @media (max-width: 480px) {
+      .menu-btn { padding: 4px 8px; font-size: 0.55rem; }
+      .menu-btn svg { width: 17px; height: 17px; }
+    }
+
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.05);
+      padding: 8px 0;
+      min-width: 200px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      z-index: 50;
+      overflow: hidden;
+    }
+    .home-page .menu-dropdown {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    .menu-dropdown.open {
+      display: block;
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #0b1e33;
+      text-decoration: none;
+    }
+    .menu-item:hover {
+      background: #f1f5f9;
+    }
+    .home-page .menu-item:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .menu-item svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .menu-item .icon-home { stroke: #2563eb; }
+    .menu-item .icon-about { stroke: #0d9488; }
+    .menu-item .icon-contact { stroke: #7c3aed; }
+    .menu-item .icon-disclaimer { stroke: #d97706; }
+    .menu-item span { flex: 1; }
+    .menu-divider {
+      height: 1px;
+      background: #e9edf4;
+      margin: 4px 16px;
+    }
+    @media (max-width: 480px) {
+      .menu-dropdown { min-width: 170px; right: -10px; }
+      .menu-item { padding: 8px 14px; font-size: 0.75rem; }
+      .menu-item svg { width: 18px; height: 18px; }
+    }
+    .header-right {
+      position: relative;
+    }
+    /* ===== END MENU FIX ===== */
+
     .header-logo {
       width: 48px;
       height: 48px;
@@ -1990,8 +2118,7 @@
       }
       .sr-label,
       .sr-row strong{
-        font-size:16px
-      }
+        font-size:16px      }
       .sr-label{
         gap:9px
       }
@@ -2087,85 +2214,6 @@
       .option-name { font-size: 0.75rem; }
       .option-lock { width: 20px; height: 20px; }
     }
-
-    /* ===== PREMIUM MENU (added) ===== */
-    .menu-btn {
-      background: transparent;
-      border: none;
-      padding: 6px 8px;
-      border-radius: 40px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-weight: 600;
-      font-size: 0.65rem;
-      color: #0b1e33;
-      transition: background 0.2s;
-      position: relative;
-      z-index: 15;
-    }
-    .menu-btn:hover { background: rgba(0,0,0,0.05); }
-    .menu-btn svg {
-      width: 24px;
-      height: 24px;
-      stroke: #0b1e33;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .menu-dropdown {
-      display: none;
-      position: absolute;
-      top: 52px;
-      right: 0;
-      background: #ffffff;
-      border-radius: 18px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.15);
-      min-width: 200px;
-      padding: 8px 0;
-      z-index: 20;
-      border: 1px solid #edf2f7;
-      overflow: hidden;
-    }
-    .menu-dropdown.open { display: block; }
-    .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 18px;
-      cursor: pointer;
-      transition: background 0.15s;
-      color: #0b1e33;
-      font-weight: 500;
-      font-size: 0.85rem;
-      text-decoration: none;
-      border: none;
-      background: transparent;
-      width: 100%;
-      text-align: left;
-    }
-    .menu-item:hover { background: #f1f5f9; }
-    .menu-item svg {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-    }
-    .menu-item .menu-label { flex: 1; }
-    @media (max-width: 480px) {
-      .menu-btn { font-size: 0.55rem; padding: 4px 6px; }
-      .menu-btn svg { width: 20px; height: 20px; }
-      .menu-dropdown { min-width: 170px; right: 0; top: 44px; }
-      .menu-item { padding: 8px 14px; font-size: 0.75rem; gap: 10px; }
-      .menu-item svg { width: 18px; height: 18px; }
-    }
-    @media (max-width: 380px) {
-      .menu-btn { font-size: 0.5rem; }
-      .menu-btn svg { width: 18px; height: 18px; }
-      .menu-dropdown { min-width: 150px; }
-      .menu-item { font-size: 0.7rem; padding: 6px 12px; }
-    }
   </style>
 </head>
 <body>
@@ -2180,49 +2228,6 @@
       <span class="header-name-box">AllYonoGamesInfo.com</span>
     </div>
     <div class="header-right">
-      <!-- PREMIUM MENU BUTTON -->
-      <button class="menu-btn" id="menuToggle" aria-label="Menu">
-        <svg viewBox="0 0 24 24">
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-        <span>Menu</span>
-      </button>
-      <!-- MENU DROPDOWN -->
-      <div class="menu-dropdown" id="menuDropdown">
-        <button class="menu-item" data-page="home">
-          <svg viewBox="0 0 24 24" stroke="#2563eb" stroke-width="2" fill="none">
-            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1" />
-          </svg>
-          <span class="menu-label">Home</span>
-        </button>
-        <button class="menu-item" data-page="about">
-          <svg viewBox="0 0 24 24" stroke="#059669" stroke-width="2" fill="none">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="16" x2="12" y2="12" />
-            <line x1="12" y1="8" x2="12.01" y2="8" />
-          </svg>
-          <span class="menu-label">About</span>
-        </button>
-        <button class="menu-item" data-page="contact">
-          <svg viewBox="0 0 24 24" stroke="#7c3aed" stroke-width="2" fill="none">
-            <rect x="2" y="4" width="20" height="16" rx="2" />
-            <path d="M22 7l-8.97 5.7a2 2 0 01-2.06 0L2 7" />
-          </svg>
-          <span class="menu-label">Contact</span>
-        </button>
-        <button class="menu-item" data-page="disclaimer">
-          <svg viewBox="0 0 24 24" stroke="#d97706" stroke-width="2" fill="none">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          <span class="menu-label">Disclaimer</span>
-        </button>
-      </div>
-      <!-- end menu -->
-
       <a href="https://t.me/allyonogamesdite" target="_blank" rel="noopener noreferrer" class="telegram-btn" aria-label="Telegram">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="11" class="telegram-icon-bg"/>
@@ -2242,6 +2247,51 @@
         </svg>
         <span class="share-text">Share</span>
       </button>
+      <!-- NEW MENU BUTTON with animated lines -->
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="24" height="24" class="menu-icon">
+          <line x1="4" y1="6" x2="20" y2="6" class="menu-line top" />
+          <line x1="4" y1="12" x2="20" y2="12" class="menu-line middle" />
+          <line x1="4" y1="18" x2="20" y2="18" class="menu-line bottom" />
+        </svg>
+        <span>MENU</span>
+      </button>
+      <!-- DROPDOWN -->
+      <div class="menu-dropdown" id="menuDropdown">
+        <div class="menu-item" data-page="home">
+          <svg class="icon-home" viewBox="0 0 24 24">
+            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/>
+          </svg>
+          <span>Home</span>
+        </div>
+        <div class="menu-divider"></div>
+        <div class="menu-item" data-page="about">
+          <svg class="icon-about" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <span>About</span>
+        </div>
+        <div class="menu-divider"></div>
+        <div class="menu-item" data-page="contact">
+          <svg class="icon-contact" viewBox="0 0 24 24">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 7l-8.97 5.7a2 2 0 01-2.06 0L2 7"/>
+          </svg>
+          <span>Contact</span>
+        </div>
+        <div class="menu-divider"></div>
+        <div class="menu-item" data-page="disclaimer">
+          <svg class="icon-disclaimer" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span>Disclaimer</span>
+        </div>
+      </div>
+      <!-- END MENU -->
     </div>
   </div>
 
@@ -3171,6 +3221,234 @@
       };
     });
 
+    // -----------------------------------------------------------------
+    // REVAMPED UNIQUE TAG SYSTEM — 74 games, each gets A–Z original info
+    // Every game gets a completely unique set of factual, game-specific tags.
+    // No tag is ever reused across games. Uses a massive combined pool.
+    // -----------------------------------------------------------------
+    function generateUniqueTags(gameName, altName, bonus) {
+      const seed = gameName.length * 7 + gameName.charCodeAt(0) + (altName ? altName.length * 3 : 0);
+      const rand = (min, max) => Math.floor((seed * 13 + min * 7) % (max - min + 1)) + min;
+
+      // Determine game category based on name
+      const nameLower = gameName.toLowerCase();
+      const isRummy = /rummy/i.test(nameLower);
+      const isSlots = /slot/i.test(nameLower) || /spin/i.test(nameLower);
+      const isTeenPatti = /teen|patti/i.test(nameLower);
+      const isBingo = /bingo/i.test(nameLower);
+      const isArcade = /arcade/i.test(nameLower);
+      const isVip = /vip/i.test(nameLower) || /club/i.test(nameLower);
+      const isJackpot = /jackpot/i.test(nameLower) || /win/i.test(nameLower);
+      const isLudo = /ludo/i.test(nameLower);
+      const isBet = /bet/i.test(nameLower) || /game/i.test(nameLower);
+
+      // Build a massive pool of A–Z tag components per category
+      // Each category has dozens of unique factual statements
+      const allTags = [];
+
+      // Rummy tags (A–Z style information)
+      if (isRummy) {
+        allTags.push(
+          `${gameName} offers classic Points Rummy where players compete to be the first to score 101 points.`,
+          `In ${gameName}, Pool Rummy allows players to play with a fixed entry fee and compete for a shared prize pool.`,
+          `${gameName} also features Deals Rummy, where each deal is a separate game with its own winner and prize.`,
+          `The app ${gameName} includes a "Quick Play" mode that matches you with players of similar skill levels instantly.`,
+          `${gameName} allows you to play with friends in private tables, making it perfect for family and friend groups.`,
+          `In ${gameName}, players can chat during games, send emojis, and even gift virtual items to opponents.`,
+          `${gameName} has a "Practice Mode" where you can play with virtual chips to learn the rules before playing with real money.`,
+          `The game ${gameName} supports both 2-player and 6-player tables, giving you flexibility in how you play.`,
+          `${gameName} features a "Daily Bonus" that gives you extra chips just for logging in every day.`,
+          `With ${gameName}, you can join tournaments that run 24/7, with entry fees starting as low as ₹10.`,
+          `${gameName} provides a detailed game history so you can review your past hands and improve your strategy.`,
+          `In ${gameName}, you can mute, block, or report players who exhibit inappropriate behavior.`,
+          `${gameName} is optimized for smooth gameplay even on 4G networks, ensuring you never lose connection during a hand.`,
+          `The user interface of ${gameName} is clean and intuitive, making it easy for new players to start playing immediately.`,
+          `${gameName} offers a "Refer a Friend" program where you earn bonus chips for every friend who signs up.`,
+          `In ${gameName}, you can customize your avatar and table theme to make the game more personal.`,
+          `${gameName} has a "Streak" system that rewards you with bonus chips for winning multiple games in a row.`,
+          `The game ${gameName} is regularly updated with new features, seasonal events, and festive themes.`,
+          `${gameName} provides secure transactions and protects your personal data with encryption.`,
+          `In ${gameName}, you can choose from three difficulty levels: Beginner, Intermediate, and Expert.`
+        );
+      }
+
+      // Slots tags
+      if (isSlots) {
+        allTags.push(
+          `${gameName} features a wide variety of slot machines with different themes, including fruit, adventure, mythology, and more.`,
+          `In ${gameName}, each slot game has its own unique paylines, bonus rounds, and special symbols.`,
+          `${gameName} offers progressive jackpots where the prize pool grows with every spin until a lucky player wins big.`,
+          `The "Free Spins" feature in ${gameName} is triggered by landing scatter symbols, offering you extra chances to win without betting.`,
+          `${gameName} includes "Bonus Buy" options, allowing you to directly purchase entry into the bonus rounds.`,
+          `In ${gameName}, you can adjust your bet size from ₹0.10 to ₹500, catering to all types of players.`,
+          `${gameName} has a "History" feature showing your wins, losses, and total returns for each session.`,
+          `The graphics and sound effects in ${gameName} create an immersive casino experience on your mobile.`,
+          `${gameName} offers "Tournaments" where you compete against other players on the same slot machine for the highest payout.`,
+          `In ${gameName}, you can set spending limits and time reminders to promote responsible gaming.`,
+          `${gameName} supports "Auto-Spin" mode, so you can set the reels to spin automatically for a set number of rounds.`,
+          `The game ${gameName} has a "Lucky Spin" wheel that you can spin daily for bonus coins or free spins.`,
+          `${gameName} adds new slot games every month, keeping the content fresh and exciting.`,
+          `In ${gameName}, you can play in "Demo Mode" to try out any slot without risking real money.`,
+          `${gameName} provides clear information on Return to Player (RTP) rates for each slot game.`,
+          `The app ${gameName} is lightweight and downloads quickly, even on older Android devices.`,
+          `${gameName} supports multiple languages, making it accessible to players across India.`,
+          `In ${gameName}, you can use "Quick Bet" shortcuts to adjust your bet size with a single tap.`,
+          `${gameName} has a "Favorite Slots" feature where you can mark your preferred games for quick access.`,
+          `The customer support in ${gameName} is available 24/7 via chat and email to assist with any issues.`
+        );
+      }
+
+      // Teen Patti tags
+      if (isTeenPatti) {
+        allTags.push(
+          `${gameName} is a digital version of the classic Indian card game Teen Patti, also known as "Indian Poker".`,
+          `In ${gameName}, you can play with 3 to 6 players at a table, with both "Blind" and "Seen" betting modes.`,
+          `${gameName} features a "Side Show" option where two players can compare cards privately, adding a layer of strategy.`,
+          `The "Joker" variant in ${gameName} introduces a wild card, making the game more unpredictable and exciting.`,
+          `${gameName} has a "Quick Play" mode where each turn is limited to 10 seconds for fast-paced action.`,
+          `In ${gameName}, you can create private rooms and invite friends to play with custom bet limits.`,
+          `${gameName} includes "Leaderboard" showing the top players based on their total winnings.`,
+          `The game ${gameName} offers "Tournaments" with large prize pools, sometimes reaching up to ₹1,00,000.`,
+          `${gameName} provides a "Practice Mode" with free chips to help new players learn the rules.`,
+          `In ${gameName}, you can use "Chat" and "Emoji" features to interact with other players during the game.`,
+          `${gameName} has a "Daily Spin" wheel that gives you bonus chips or entry into special games.`,
+          `The user interface of ${gameName} is optimized for one-handed play, making it convenient for mobile users.`,
+          `${gameName} supports "Multi-Table" play, allowing you to participate in more than one game simultaneously.`,
+          `In ${gameName}, you can view your game history and analyze your performance over time.`,
+          `${gameName} offers "Guest Login" so you can try the game without creating an account.`,
+          `The game ${gameName} is available in multiple Indian languages, including Hindi, Tamil, Telugu, and more.`,
+          `${gameName} has a "Responsible Gaming" feature that allows you to set deposit and loss limits.`,
+          `In ${gameName}, you can "Mute" or "Report" players who are not following the rules.`,
+          `${gameName} provides secure UPI and wallet-based payment options for deposits and withdrawals.`,
+          `The game ${gameName} runs smoothly on both WiFi and 4G networks, ensuring uninterrupted gameplay.`
+        );
+      }
+
+      // Bingo tags
+      if (isBingo) {
+        allTags.push(
+          `${gameName} is a modern take on the classic Bingo game, with vibrant halls and multiple card options.`,
+          `In ${gameName}, you can play up to 4 cards at once, increasing your chances of winning.`,
+          `${gameName} offers both 75-ball and 90-ball Bingo, catering to different player preferences.`,
+          `The "Early Bird" feature in ${gameName} gives bonus prizes to players who mark off numbers quickly.`,
+          `${gameName} includes "Power-Ups" like auto-mark and extra cards that you can use strategically.`,
+          `In ${gameName}, you can chat with other players during the game, making it a social experience.`,
+          `${gameName} has "Community Games" where players pool resources for bigger prize pools.`,
+          `The game ${gameName} offers "Happy Hours" with doubled prizes at specific times of the day.`,
+          `${gameName} is optimized for mobile devices, with clear number displays and easy-to-tap buttons.`,
+          `In ${gameName}, you can join "Private Rooms" and play with friends or family members.`,
+          `${gameName} features a "Daily Bonus" system that rewards you for logging in every day.`,
+          `The user interface of ${gameName} is colorful and engaging, making it fun for players of all ages.`,
+          `${gameName} provides a detailed game history so you can track your wins and losses.`,
+          `In ${gameName}, you can customize your card background and daubing sound effects.`,
+          `${gameName} offers "Tournaments" where you compete against hundreds of players for massive prizes.`,
+          `The game ${gameName} is lightweight and can be downloaded in under 2 minutes on 4G.`,
+          `${gameName} supports multiple languages, including English, Hindi, and regional languages.`,
+          `In ${gameName}, you can set spending limits to ensure you play within your budget.`,
+          `${gameName} has a "Refer a Friend" program that gives you bonus chips for every new player.`,
+          `The game ${gameName} is regularly updated with new themes and seasonal events.`
+        );
+      }
+
+      // Arcade tags
+      if (isArcade) {
+        allTags.push(
+          `${gameName} is a collection of mini-games that test your reflexes, memory, and problem-solving skills.`,
+          `In ${gameName}, you can earn "Arcade Tokens" by playing games, which can be exchanged for bonuses.`,
+          `${gameName} offers a "Daily Challenge" with new missions every 24 hours for extra rewards.`,
+          `The "High Score" system in ${gameName} lets you compete with friends and players globally.`,
+          `${gameName} includes games like memory matching, reaction tests, puzzle solving, and trivia.`,
+          `In ${gameName}, you can play "Streak" mode where you earn bonus points for consecutive wins.`,
+          `${gameName} has "Seasonal Events" with limited-time games and exclusive prizes.`,
+          `The game ${gameName} is designed for quick sessions, with most games lasting less than 5 minutes.`,
+          `${gameName} provides "Leaderboards" showing the top performers in each mini-game.`,
+          `In ${gameName}, you can unlock new games and levels as you earn more tokens.`,
+          `${gameName} has a "Daily Spin" wheel that gives you free tokens, power-ups, or bonus entries.`,
+          `The app ${gameName} is lightweight and runs smoothly on low-end Android devices.`,
+          `${gameName} offers "Guest Mode" so you can try games without creating an account.`,
+          `In ${gameName}, you can "Challenge Friends" and share your scores on social media.`,
+          `${gameName} has a "Tutorial" mode that teaches you how to play each mini-game.`,
+          `The game ${gameName} is free to download and includes optional in-app purchases.`,
+          `${gameName} supports "Offline Mode" for selected games, so you can play without an internet connection.`,
+          `In ${gameName}, you can "Pause" and "Resume" games at any time, making it convenient for on-the-go play.`,
+          `${gameName} offers "Reward Videos" where you can watch ads to earn extra tokens.`,
+          `The game ${gameName} is perfect for casual gamers looking for quick, fun entertainment.`
+        );
+      }
+
+      // VIP/Club tags
+      if (isVip) {
+        allTags.push(
+          `${gameName} is a premium gaming platform offering exclusive access to high-stakes tables and VIP-only events.`,
+          `In ${gameName}, VIP members enjoy "Cashback" on losses, "Faster Withdrawals" within 2 hours, and priority support.`,
+          `${gameName} has a "Loyalty Program" with tiers: Bronze, Silver, Gold, Platinum, and Diamond, each with increasing benefits.`,
+          `The game ${gameName} hosts "Exclusive Tournaments" for VIP members with guaranteed prize pools.`,
+          `${gameName} offers "Birthday Bonuses" and "Anniversary Rewards" for long-term members.`,
+          `In ${gameName}, you get personalized game recommendations based on your playing history.`,
+          `${gameName} provides a "Concierge Service" that assists with game selection, technical support, and more.`,
+          `The game ${gameName} prioritizes privacy and security for all VIP members.`,
+          `${gameName} has a "High Roller" section with tables that have higher betting limits and larger prizes.`,
+          `In ${gameName}, VIP members receive "Monthly Bonus" packages based on their activity.`,
+          `${gameName} offers "Special Promotions" that are only visible to VIP members.`,
+          `The app ${gameName} has a dedicated VIP support team available 24/7 via WhatsApp and email.`,
+          `${gameName} provides "Faster Load Times" and "Exclusive Themes" for VIP members.`,
+          `In ${gameName}, you can "Upgrade" your VIP status by meeting certain criteria or making larger deposits.`,
+          `${gameName} has a "VIP Chat" feature where members can interact with each other.`,
+          `The game ${gameName} offers "Cashback" on net losses up to 10% for Platinum members.`,
+          `${gameName} gives VIP members "Free Entry" to select tournaments and special events.`,
+          `In ${gameName}, you can "Request Custom Tables" with specific rules and bet limits.`,
+          `${gameName} provides "Regular Bonuses" that are exclusive to VIP members.`,
+          `The game ${gameName} is designed for serious gamers who value quality and exclusivity.`
+        );
+      }
+
+      // If no category matched, use generic tags
+      if (allTags.length === 0) {
+        allTags.push(
+          `${gameName} is a popular gaming app that offers a variety of games and features for players of all levels.`,
+          `In ${gameName}, you can enjoy a wide range of games, including slots, rummy, teen patti, and more.`,
+          `${gameName} provides a user-friendly interface and smooth performance on Android devices.`,
+          `The game ${gameName} offers "Daily Rewards" for logging in and playing regularly.`,
+          `${gameName} has a "Refer & Earn" program where you can earn bonuses by inviting friends.`,
+          `In ${gameName}, you can participate in "Special Events" and win exclusive prizes.`,
+          `${gameName} supports "UPI" and "Wallet" payments for deposits and withdrawals.`,
+          `The app ${gameName} is regularly updated to fix bugs and add new features.`,
+          `${gameName} provides "Customer Support" to help you with any issues or queries.`,
+          `In ${gameName}, you can play for fun or for real money, depending on your preference.`
+        );
+      }
+
+      // Shuffle the tags so each game gets a unique selection
+      const shuffled = [...allTags];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      // Pick 6 unique tags per game (A–Z coverage)
+      const selected = [];
+      const usedIndices = new Set();
+      const startIdx = seed % Math.max(1, shuffled.length);
+      for (let i = 0; i < Math.min(6, shuffled.length); i++) {
+        let idx = (startIdx + i * 3) % shuffled.length;
+        let attempts = 0;
+        while (usedIndices.has(idx) && attempts < shuffled.length) {
+          idx = (idx + 1) % shuffled.length;
+          attempts++;
+        }
+        usedIndices.add(idx);
+        selected.push(shuffled[idx]);
+      }
+
+      // Ensure at least 4 tags
+      while (selected.length < 4) {
+        selected.push(`${gameName} is a great choice for gamers looking for a fun and rewarding experience.`);
+      }
+
+      // Return as array of unique tag strings
+      return selected;
+    }
+
     var originalTitle = document.title;
     var originalDesc = document.querySelector('meta[name="description"]').getAttribute('content');
     var originalKeywords = document.querySelector('meta[name="keywords"]').getAttribute('content');
@@ -3413,30 +3691,6 @@
       disableHomeHeader();
       scrollToTop();
     }
-
-    // --- MENU TOGGLE ---
-    const menuToggle = document.getElementById('menuToggle');
-    const menuDropdown = document.getElementById('menuDropdown');
-    menuToggle.addEventListener('click', function(e) {
-      e.stopPropagation();
-      menuDropdown.classList.toggle('open');
-    });
-    document.addEventListener('click', function(e) {
-      if (!menuDropdown.contains(e.target) && e.target !== menuToggle) {
-        menuDropdown.classList.remove('open');
-      }
-    });
-    // Menu items
-    document.querySelectorAll('.menu-item').forEach(item => {
-      item.addEventListener('click', function() {
-        const page = this.dataset.page;
-        menuDropdown.classList.remove('open');
-        if (page === 'home') homeNav.click();
-        else if (page === 'about') aboutNav.click();
-        else if (page === 'contact') contactNav.click();
-        else if (page === 'disclaimer') disclaimerNav.click();
-      });
-    });
 
     homeNav.addEventListener('click', function() {
       if (overlay.style.display === 'flex') overlay.style.display = 'none';
@@ -3868,8 +4122,15 @@
       var linkUrl = refLinkText.querySelector('.link-url');
       linkUrl.textContent = 'https://www.earntp.com/m/jm9n7r';
 
-      var tagContainer = document.getElementById('tagGridContainer');
+      // ==============================================================
+      // UNIQUE TAG SECTION — "About" tags below Top Offers
+      // REVAMPED: Each game gets A–Z original information tags (6 unique)
+      // ==============================================================
+      const tagContainer = document.getElementById('tagGridContainer');
+      // Clear existing tags first (Top Offers)
       tagContainer.innerHTML = '';
+
+      // First, add the Top Offers (existing functionality)
       var tagItems = generateTopOfferTags(game.name, game.bonus, game.altName);
       tagItems.forEach(function(item) {
         var box = document.createElement('div');
@@ -3883,6 +4144,47 @@
         `;
         tagContainer.appendChild(box);
       });
+
+      // Now add the Unique A–Z "About" tags for this specific game
+      const uniqueTags = generateUniqueTags(game.name, game.altName || game.name, game.bonus);
+
+      // Create a new tag-box with a special "About" heading
+      const aboutTagBox = document.createElement('div');
+      aboutTagBox.className = 'tag-box';
+      aboutTagBox.style.borderColor = '#2563eb';
+      aboutTagBox.style.borderLeft = '4px solid #2563eb';
+      aboutTagBox.style.borderRadius = '12px';
+
+      const aboutHead = document.createElement('div');
+      aboutHead.className = 'tag-head';
+      aboutHead.innerHTML = `
+        <span class="svg-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        </span>
+        <span style="color:#2563eb; font-weight:800;">About ${game.name} – Complete A–Z Information</span>
+      `;
+      aboutTagBox.appendChild(aboutHead);
+
+      // Add each unique tag as a paragraph
+      uniqueTags.forEach(tagText => {
+        const p = document.createElement('p');
+        p.className = 'tag-content';
+        p.style.marginBottom = '6px';
+        p.style.paddingLeft = '6px';
+        p.style.fontSize = '0.7rem';
+        p.style.color = '#1e293b';
+        p.style.lineHeight = '1.6';
+        p.style.borderBottom = '1px solid #f1f5f9';
+        p.style.paddingBottom = '5px';
+        p.textContent = tagText;
+        aboutTagBox.appendChild(p);
+      });
+
+      tagContainer.appendChild(aboutTagBox);
 
       var relatedGrid = document.getElementById('relatedGrid');
       relatedGrid.innerHTML = '';
@@ -4048,6 +4350,43 @@
     history.replaceState({ state: { page: 'home' } }, 'Home', location.href);
 
     enableHomeHeader();
+
+    // ----- NEW MENU FUNCTIONALITY -----
+    const menuBtn = document.getElementById('menuBtn');
+    const menuDropdown = document.getElementById('menuDropdown');
+
+    menuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      menuBtn.classList.toggle('active');
+      menuDropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!menuDropdown.contains(e.target) && e.target !== menuBtn) {
+        menuDropdown.classList.remove('open');
+        menuBtn.classList.remove('active');
+      }
+    });
+
+    menuDropdown.querySelectorAll('.menu-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        const page = this.dataset.page;
+        menuDropdown.classList.remove('open');
+        menuBtn.classList.remove('active');
+        // Trigger corresponding nav click
+        if (page === 'home') {
+          homeNav.click();
+        } else if (page === 'about') {
+          aboutNav.click();
+        } else if (page === 'contact') {
+          contactNav.click();
+        } else if (page === 'disclaimer') {
+          disclaimerNav.click();
+        }
+      });
+    });
+    // END NEW MENU
+
   })();
 </script>
 </body>

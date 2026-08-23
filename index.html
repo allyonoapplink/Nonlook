@@ -13,10 +13,11 @@
   <link rel="preload" as="image" href="https://i.ibb.co/XTFNccf/1785915333592.jpg" fetchpriority="high">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
-    body { background: #ffffff !important; padding: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    .container { width: 100%; max-width: 1200px; margin: 0 auto; background: #ffffff !important; min-height: 100vh; overflow: hidden; padding: 0; }
-    @media (max-width: 480px) { .container { max-width: 100%; padding: 0; } }
-    @media (min-width: 1201px) { .container { padding: 0 20px; } }
+    html { background: #ffffff; -webkit-overflow-scrolling: touch; }
+    body { background: #ffffff !important; padding: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; -webkit-overflow-scrolling: touch; }
+    .container { width: 100%; max-width: 691px; margin: 0 auto; background: #ffffff !important; min-height: 100vh; overflow: visible; padding: 0; }
+    @media (max-width: 691px) { .container { max-width: 100%; padding: 0; } }
+    @media (min-width: 692px) { .container { padding: 0 15px; } }
     .top-header, .marquee-container, .nav-row-small, #mainGrid, .detail-card, .tag-section, .faq-section, .toc-section, .game-tags-section, .related-section, .footer-note, .static-page, .card, .tag-box, .faq-box, .toc-item, .related-item, .game-tag {
       background: #ffffff !important;
     }
@@ -29,12 +30,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 10px;
+      padding: 8px 15px;
       background: #ffffff !important;
       border-bottom: 4px solid #00cc44;
       position: sticky;
       top: 0;
       z-index: 10;
+      height: 210px;
+      min-height: 210px;
+      max-height: 210px;
     }
     .home-page .top-header {
       background: linear-gradient(135deg, #00d4ff 0%, #00e676 50%, #00d4ff 100%) !important;
@@ -94,6 +98,9 @@
       box-shadow: 0 0 30px rgba(0, 212, 255, 0.2), 0 0 60px rgba(0, 230, 118, 0.1), inset 0 0 30px rgba(0, 255, 200, 0.05) !important;
       position: relative;
       padding: 6px 8px;
+      height: 55px;
+      min-height: 55px;
+      max-height: 55px;
     }
     .home-page .nav-row-small::before {
       content: '';
@@ -141,6 +148,9 @@
       padding: 4px 6px;
       border-bottom: 1px solid #e9edf4;
       gap: 2px;
+      height: 55px;
+      min-height: 55px;
+      max-height: 55px;
     }
     .nav-small {
       font-size: 0.5rem;
@@ -424,6 +434,22 @@
     .menu-btn.active .menu-line.bottom {
       transform: translateY(-6px) rotate(-45deg);
     }
+    /* PREMIUM CLOSE (✖) ICON — shown only while menu is open; hides the
+       hamburger icon and the "MENU" text at the same time (old model
+       otherwise unchanged). */
+    .menu-btn .menu-close-icon {
+      display: none;
+      width: 20px;
+      height: 20px;
+      animation: menuCloseSpin 0.35s ease;
+    }
+    .menu-btn.active .menu-icon { display: none; }
+    .menu-btn.active .menu-close-icon { display: inline-flex; }
+    .menu-btn.active span { display: none; }
+    @keyframes menuCloseSpin {
+      from { transform: rotate(-90deg) scale(0.6); opacity: 0; }
+      to   { transform: rotate(0deg) scale(1); opacity: 1; }
+    }
     .home-page .menu-btn {
       background: rgba(255, 255, 255, 0.9);
       border-color: rgba(255, 255, 255, 0.6);
@@ -529,7 +555,7 @@
     @media (min-width: 1201px) { .header-logo { width: 54px; height: 54px; border-width: 4px; border-radius: 14px; } }
     .home-greenbox {
       width: 100%;
-      max-width: 1170px;
+      max-width: 691px;
       height: auto;
       min-height: 110px;
       max-height: 160px;
@@ -1223,6 +1249,85 @@
       transform: scale(0.98);
     }
 
+    /* ORIGINAL "Download APK" button, above Top Offers — old position, always
+       visible (not scroll-controlled), with a plain GREEN LED pulsing glow. */
+    .dl-green-btn {
+      animation: ledGreenGlow 1.6s ease-in-out infinite;
+    }
+    @keyframes ledGreenGlow {
+      0%, 100% { box-shadow: 0 0 10px 2px rgba(0,230,118,.65), 0 0 22px 6px rgba(0,230,118,.30); }
+      50%      { box-shadow: 0 0 14px 4px rgba(0,230,118,.85), 0 0 28px 8px rgba(0,230,118,.40); }
+    }
+
+    /* STICKY scroll-triggered download bar (separate button) — appears once
+       the user scrolls down, fixed at the bottom-center of the screen, with
+       a fresh premium color model (same glow mechanic, new color set). */
+    .dl-sticky-btn {
+      display: flex;
+      position: fixed;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%) translateY(14px);
+      width: min(92vw, 460px);
+      margin: 0;
+      z-index: 998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      background:
+        radial-gradient(circle at 0 0,#B388FF 0,transparent 42%),
+        radial-gradient(circle at 100% 0,#FF4D9D 0,transparent 42%),
+        radial-gradient(circle at 0 100%,#FFD54F 0,transparent 42%),
+        radial-gradient(circle at 100% 100%,#00E5FF 0,transparent 42%),
+        #7C3CFF;
+      animation: ledAtomicGlowNew 1.6s ease-in-out infinite;
+    }
+    .dl-sticky-btn.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+    @keyframes ledAtomicGlowNew {
+      0%   { box-shadow: 0 0 10px 2px rgba(124,60,255,.7), 0 0 22px 6px rgba(124,60,255,.35); }
+      33%  { box-shadow: 0 0 10px 2px rgba(255,77,157,.7), 0 0 22px 6px rgba(255,77,157,.35); }
+      66%  { box-shadow: 0 0 10px 2px rgba(255,213,79,.7), 0 0 22px 6px rgba(255,213,79,.35); }
+      100% { box-shadow: 0 0 10px 2px rgba(124,60,255,.7), 0 0 22px 6px rgba(124,60,255,.35); }
+    }
+
+    /* FLOATING SCROLL-TO-TOP ICON */
+    .scroll-top-fab {
+      position: fixed;
+      right: 16px;
+      bottom: 18px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #00FFFF, #087CFF 55%, #7C3CFF 100%);
+      box-shadow: 0 4px 14px rgba(8,124,255,.45), 0 0 0 2px rgba(255,255,255,.6) inset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px) scale(0.9);
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    }
+    .scroll-top-fab.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    .scroll-top-fab.fab-raised {
+      bottom: 84px;
+    }
+    .scroll-top-fab svg {
+      width: 22px;
+      height: 22px;
+      filter: drop-shadow(0 0 3px rgba(255,255,255,.8));
+    }
+
     .apk-download-line {
       text-align: center;
       margin-top: 8px;
@@ -1535,69 +1640,114 @@
       .rdownload { padding: 12px 28px 12px 20px !important; font-size: 0.85rem !important; gap: 10px !important; min-width: 130px; }
       .rdownload svg { width: 20px; height: 20px; }
     }
-    #mainGrid { display: flex; flex-direction: column; gap: 6px; padding: 8px; }
+
+    /* ============================================================ */
+    /* MAIN CARDS — HOME PAGE & DETAILS PAGE (Related Games)        */
+    /* SPEC: 660px width, 125px height, 84×84 image, 32×32 number,  */
+    /* 185×55 download, name 20px, bonus & withdrawal 18-20px,      */
+    /* gap 12px, side margin 15-16px, border-radius 22-24px.        */
+    /* ============================================================ */
+    #mainGrid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 15px 16px;
+      max-width: 691px;
+      margin: 0 auto;
+    }
+
     .card {
       background: white;
-      border-radius: 12px;
-      padding: 8px 10px;
+      border-radius: 23px;
+      padding: 0 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.03);
       display: flex;
       align-items: center;
-      gap: 0px;
+      gap: 0;
       border: 1px solid #e9edf4;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       justify-content: flex-start;
       width: 100%;
+      max-width: 660px;
+      height: 125px;
+      min-height: 125px;
+      max-height: 125px;
+      margin: 0 auto;
     }
     .card:active { transform: scale(0.97); background: #fafcff; }
-    .card-number {
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      background: #000;
-      color: #fff;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      font-size: 0.45rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 5;
-      border: 1.5px solid #333;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
+
+    /* IMAGE: 84×84, left side */
     .card-img {
-      width: 68px;
-      height: 60px;
-      border-radius: 10px;
+      width: 84px;
+      height: 84px;
+      min-width: 84px;
+      min-height: 84px;
+      border-radius: 23px;
       background: #f0f4ff;
       flex-shrink: 0;
       overflow: hidden;
       border: 1px solid #e2e8f0;
-      margin-left: 28px;
-      margin-right: 22px;
+      margin-left: 0;
+      margin-right: 0;
+      position: relative;
     }
-    .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .card-img .premium-led-badge {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-weight: 800;
+      font-size: 0.55rem;
+      color: #ffffff;
+      background: #FF0000;
+      padding: 1px 6px;
+      border-radius: 6px;
+      line-height: 1.4;
+      z-index: 2;
+      font-family: system-ui, -apple-system, sans-serif;
+      letter-spacing: 0.3px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      box-shadow: 0 0 8px rgba(255,255,255,0.15);
+      min-width: 22px;
+      text-align: center;
+    }
+
+    /* INFO: flex-1, no extra gaps */
     .card-info {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 1px;
+      gap: 2px;
       min-width: 0;
-      padding-right: 4px;
+      padding: 0 12px 0 16px;
+      justify-content: center;
+      height: 100%;
     }
-    .card-name { font-weight: 700; font-size: 0.7rem; color: #0b1e33; display: flex; align-items: center; flex-wrap: wrap; }
+    .card-name {
+      font-weight: 700;
+      font-size: 20px;
+      color: #0b1e33;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      line-height: 1.2;
+    }
     .card-name .alt { display: none !important; }
+
     .card-bonus, .card-withdraw {
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 0.55rem;
+      font-size: 19px;
       font-weight: 600;
+      line-height: 1.2;
     }
     .card-bonus .icon-svg, .card-withdraw .icon-svg {
       display: inline-flex;
@@ -1618,13 +1768,15 @@
     .card-withdraw { color: #16a34a; }
     .card-withdraw .label { color: #16a34a; font-weight: 600; }
     .card-withdraw .value { color: #16a34a; font-weight: 700; }
-    .card-withdraw { font-size: 0.5rem; }
+    .card-withdraw { font-size: 18px; }
+
+    /* DOWNLOAD BUTTON: 185×55, no extra right space */
     .card-download-sm {
       flex-shrink: 0;
       background: #00c853 !important;
       color: #ffffff !important;
       border: 2px solid #00c853 !important;
-      padding: 10px 22px 10px 16px !important;
+      padding: 0 !important;
       font-size: 0.75rem !important;
       font-weight: 700 !important;
       border-radius: 50px !important;
@@ -1632,15 +1784,20 @@
       white-space: nowrap;
       display: inline-flex !important;
       align-items: center !important;
+      justify-content: center !important;
       gap: 8px !important;
       box-shadow: 0 0 15px rgba(0,200,83,0.25), 0 0 30px rgba(0,200,83,0.08) !important;
       transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94) !important;
       text-decoration: none;
       letter-spacing: 0.3px;
-      margin-left: 4px;
-      margin-right: 4px;
-      min-width: 100px;
-      justify-content: center;
+      margin: 0;
+      width: 185px;
+      min-width: 185px;
+      max-width: 185px;
+      height: 55px;
+      min-height: 55px;
+      max-height: 55px;
+      line-height: 1;
     }
     .card-download-sm::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpolyline points='7 10 12 15 17 10'/%3E%3Cline x1='12' y1='15' x2='12' y2='3'/%3E%3C/svg%3E");
@@ -1662,32 +1819,319 @@
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpolyline points='7 10 12 15 17 10'/%3E%3Cline x1='12' y1='15' x2='12' y2='3'/%3E%3C/svg%3E");
     }
     .card-download-sm:active { transform: scale(0.94) !important; box-shadow: 0 0 20px rgba(0,200,83,0.3) !important; }
-    @media (max-width: 420px) {
-      .card-img { width: 60px; height: 52px; margin-left: 25px; margin-right: 18px; }
-      .card-number { width: 16px; height: 16px; font-size: 0.4rem; top: 2px; left: 2px; }
-      .card-name { font-size: 0.6rem; }
-      .card-bonus { font-size: 0.5rem; }
-      .card-withdraw { font-size: 0.45rem; }
-      .card-download-sm { padding: 8px 16px 8px 12px !important; font-size: 0.65rem !important; gap: 6px !important; min-width: 80px; }
-      .card-download-sm::before { width: 15px; height: 15px; }
-      .card-bonus .icon-svg, .card-withdraw .icon-svg { width: 18px; height: 18px; }
+
+    /* ============================================================ */
+    /* RELATED GRID — DETAILS PAGE (Other Related Yono Games)       */
+    /* SAME SPEC: 660px width, 125px height, 84×84 image, etc.      */
+    /* ============================================================ */
+    .related-grid-home {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 4px 0;
     }
-    @media (max-width: 360px) {
-      .card-img { width: 52px; height: 46px; margin-left: 22px; margin-right: 14px; }
-      .card-number { width: 14px; height: 14px; font-size: 0.35rem; top: 2px; left: 2px; }
-      .card-name { font-size: 0.5rem; }
-      .card-bonus { font-size: 0.45rem; }
-      .card-withdraw { font-size: 0.4rem; }
-      .card-download-sm { padding: 6px 12px 6px 10px !important; font-size: 0.55rem !important; gap: 4px !important; min-width: 65px; }
-      .card-download-sm::before { width: 12px; height: 12px; }
-      .card-bonus .icon-svg, .card-withdraw .icon-svg { width: 16px; height: 16px; }
+
+    .card-home {
+      background: white;
+      border-radius: 23px;
+      padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid #e9edf4;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      justify-content: flex-start;
+      width: 100%;
+      max-width: 660px;
+      height: 125px;
+      min-height: 125px;
+      max-height: 125px;
+      margin: 0 auto;
     }
+    .card-home:active { transform: scale(0.97); background: #fafcff; }
+
+    .card-img-home {
+      width: 84px;
+      height: 84px;
+      min-width: 84px;
+      min-height: 84px;
+      border-radius: 23px;
+      background: #f0f4ff;
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      margin-left: 0;
+      margin-right: 0;
+      position: relative;
+    }
+    .card-img-home img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .card-img-home .premium-led-badge-home {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-weight: 800;
+      font-size: 0.55rem;
+      color: #ffffff;
+      padding: 1px 6px;
+      border-radius: 6px;
+      line-height: 1.4;
+      z-index: 2;
+      font-family: system-ui, -apple-system, sans-serif;
+      letter-spacing: 0.3px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      box-shadow: 0 0 8px rgba(255,255,255,0.15);
+      min-width: 22px;
+      text-align: center;
+    }
+
+    .card-info-home {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      padding: 0 12px 0 16px;
+      justify-content: center;
+      height: 100%;
+    }
+    .card-name-home {
+      font-weight: 700;
+      font-size: 20px;
+      color: #0b1e33;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      line-height: 1.2;
+    }
+    .card-name-home .alt { display: none !important; }
+
+    .card-bonus-home, .card-withdraw-home {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .card-bonus-home .icon-svg-home, .card-withdraw-home .icon-svg-home {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
+    .card-bonus-home .icon-svg-home svg, .card-withdraw-home .icon-svg-home svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .card-bonus-home { color: #dc2626; }
+    .card-bonus-home .label { color: #dc2626; font-weight: 600; }
+    .card-bonus-home .value { color: #dc2626; font-weight: 700; }
+    .card-withdraw-home { color: #16a34a; }
+    .card-withdraw-home .label { color: #16a34a; font-weight: 600; }
+    .card-withdraw-home .value { color: #16a34a; font-weight: 700; }
+    .card-withdraw-home { font-size: 18px; }
+
+    .card-download-sm-home {
+      flex-shrink: 0;
+      background: #00c853 !important;
+      color: #ffffff !important;
+      border: 2px solid #00c853 !important;
+      padding: 0 !important;
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      border-radius: 50px !important;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      box-shadow: 0 0 15px rgba(0,200,83,0.25), 0 0 30px rgba(0,200,83,0.08) !important;
+      transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94) !important;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      margin: 0;
+      width: 185px;
+      min-width: 185px;
+      max-width: 185px;
+      height: 55px;
+      min-height: 55px;
+      max-height: 55px;
+      line-height: 1;
+    }
+    .card-download-sm-home::before {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpolyline points='7 10 12 15 17 10'/%3E%3Cline x1='12' y1='15' x2='12' y2='3'/%3E%3C/svg%3E");
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      line-height: 1;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.2));
+    }
+    .card-download-sm-home:hover {
+      background: #00e676 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 25px rgba(0,200,83,0.4), 0 0 50px rgba(0,200,83,0.15) !important;
+      transform: scale(1.04) translateY(-2px) !important;
+      border-color: #00e676 !important;
+    }
+    .card-download-sm-home:hover::before {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpolyline points='7 10 12 15 17 10'/%3E%3Cline x1='12' y1='15' x2='12' y2='3'/%3E%3C/svg%3E");
+    }
+    .card-download-sm-home:active { transform: scale(0.94) !important; box-shadow: 0 0 20px rgba(0,200,83,0.3) !important; }
+
+    /* ============================================================ */
+    /* RESPONSIVE TWEAKS — maintain proportions on smaller screens   */
+    /* ============================================================ */
+    @media (max-width: 660px) {
+      .card, .card-home {
+        max-width: 100%;
+        height: 115px;
+        min-height: 115px;
+        max-height: 115px;
+        padding: 0 12px;
+      }
+      .card-img, .card-img-home {
+        width: 72px;
+        height: 72px;
+        min-width: 72px;
+        min-height: 72px;
+      }
+      .card-name, .card-name-home { font-size: 17px; }
+      .card-bonus, .card-withdraw, .card-bonus-home, .card-withdraw-home { font-size: 16px; }
+      .card-download-sm, .card-download-sm-home {
+        width: 160px;
+        min-width: 160px;
+        max-width: 160px;
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
+        font-size: 0.65rem !important;
+      }
+      .card-download-sm::before, .card-download-sm-home::before { width: 16px; height: 16px; }
+      .card-info, .card-info-home { padding: 0 8px 0 12px; }
+      #mainGrid { padding: 12px 14px; gap: 10px; }
+      .related-grid-home { gap: 10px; }
+    }
+
+    @media (max-width: 480px) {
+      .card, .card-home {
+        height: 105px;
+        min-height: 105px;
+        max-height: 105px;
+        padding: 0 10px;
+        border-radius: 20px;
+      }
+      .card-img, .card-img-home {
+        width: 64px;
+        height: 64px;
+        min-width: 64px;
+        min-height: 64px;
+        border-radius: 18px;
+      }
+      .card-name, .card-name-home { font-size: 15px; }
+      .card-bonus, .card-withdraw, .card-bonus-home, .card-withdraw-home { font-size: 14px; }
+      .card-download-sm, .card-download-sm-home {
+        width: 135px;
+        min-width: 135px;
+        max-width: 135px;
+        height: 42px;
+        min-height: 42px;
+        max-height: 42px;
+        font-size: 0.55rem !important;
+        gap: 5px !important;
+      }
+      .card-download-sm::before, .card-download-sm-home::before { width: 14px; height: 14px; }
+      .card-info, .card-info-home { padding: 0 6px 0 10px; gap: 1px; }
+      #mainGrid { padding: 10px 12px; gap: 8px; }
+      .related-grid-home { gap: 8px; }
+      .card-img .premium-led-badge, .card-img-home .premium-led-badge-home {
+        font-size: 0.45rem;
+        padding: 1px 4px;
+        min-width: 16px;
+        top: 1px;
+        left: 1px;
+        border-radius: 4px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .card, .card-home {
+        height: 95px;
+        min-height: 95px;
+        max-height: 95px;
+        padding: 0 8px;
+        border-radius: 18px;
+      }
+      .card-img, .card-img-home {
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        min-height: 56px;
+        border-radius: 16px;
+      }
+      .card-name, .card-name-home { font-size: 13px; }
+      .card-bonus, .card-withdraw, .card-bonus-home, .card-withdraw-home { font-size: 12px; }
+      .card-download-sm, .card-download-sm-home {
+        width: 110px;
+        min-width: 110px;
+        max-width: 110px;
+        height: 36px;
+        min-height: 36px;
+        max-height: 36px;
+        font-size: 0.45rem !important;
+        gap: 4px !important;
+        border-width: 1.5px !important;
+      }
+      .card-download-sm::before, .card-download-sm-home::before { width: 12px; height: 12px; }
+      .card-info, .card-info-home { padding: 0 4px 0 8px; }
+      #mainGrid { padding: 8px 10px; gap: 6px; }
+      .related-grid-home { gap: 6px; }
+    }
+
     @media (min-width: 769px) {
-      .card-img { width: 76px; height: 68px; margin-left: 32px; margin-right: 24px; }
-      .card-download-sm { padding: 12px 28px 12px 20px !important; font-size: 0.85rem !important; gap: 10px !important; min-width: 130px; }
-      .card-download-sm::before { width: 20px; height: 20px; }
-      .card-bonus .icon-svg, .card-withdraw .icon-svg { width: 22px; height: 22px; }
+      .card, .card-home {
+        max-width: 660px;
+        height: 125px;
+        min-height: 125px;
+        max-height: 125px;
+        padding: 0 16px;
+      }
+      .card-img, .card-img-home {
+        width: 84px;
+        height: 84px;
+        min-width: 84px;
+        min-height: 84px;
+      }
+      .card-name, .card-name-home { font-size: 20px; }
+      .card-bonus, .card-withdraw, .card-bonus-home, .card-withdraw-home { font-size: 19px; }
+      .card-download-sm, .card-download-sm-home {
+        width: 185px;
+        min-width: 185px;
+        max-width: 185px;
+        height: 55px;
+        min-height: 55px;
+        max-height: 55px;
+        font-size: 0.75rem !important;
+      }
+      .card-download-sm::before, .card-download-sm-home::before { width: 18px; height: 18px; }
     }
+
+    /* ============================================================ */
+    /* END CARD SPECS                                               */
+    /* ============================================================ */
+
     .footer-note {
       padding: 10px 10px 8px 10px;
       text-align: center;
@@ -1800,13 +2244,39 @@
     .yono-info-section .yono-info-title .title-text { flex: 1; text-align: left; }
     .yono-tags-container {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      flex-direction: column;
+      gap: 10px;
       padding: 4px 0 2px 0;
       min-height: 30px;
       width: 100%;
-      justify-content: flex-start;
     }
+    .yono-info-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #2563eb;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .yono-info-head {
+      padding: 9px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #0b1e33;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .yono-info-body {
+      padding: 6px 12px 10px 12px;
+    }
+    .yono-info-tag {
+      font-size: 0.72rem;
+      line-height: 1.65;
+      color: #334155;
+      padding: 5px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    .yono-info-tag:last-child { border-bottom: none; }
     .yono-tag {
       display: inline-block;
       background: #f5f7fa;
@@ -2171,6 +2641,33 @@
     .info-option:hover {
       background: #f1f5f9;
     }
+    .safety-security-box {
+      margin: 6px 12px 4px 12px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #2563eb;
+      border-radius: 10px;
+    }
+    .safety-tag {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+    .safety-tag:last-child { margin-bottom: 0; }
+    .safety-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+    }
+    .safety-icon svg { width: 20px; height: 20px; }
+    .safety-text {
+      font-size: 0.72rem;
+      line-height: 1.6;
+      color: #334155;
+    }
     .option-icon {
       flex-shrink: 0;
       width: 28px;
@@ -2248,6 +2745,194 @@
       color: #dc2626;
       font-weight: 700;
     }
+
+    /* GREEN BORDER FOR TAG SECTION */
+    .tag-section-green-border {
+      border: 3px solid #00cc44;
+      border-radius: 12px;
+      padding: 0px;
+      margin: 6px 0;
+      background: #ffffff;
+    }
+    .tag-section-green-border .tag-section {
+      border: none;
+      padding: 6px 6px;
+    }
+    .tag-section-green-border .tag-grid {
+      gap: 4px;
+    }
+
+    /* REMOVE ICONS FROM TAG HEAD */
+    .tag-box .tag-head .svg-icon {
+      display: none !important;
+    }
+
+    /* HOW TO DOWNLOAD & INSTALL SECTION - UPDATED */
+    .download-install-section {
+      margin: 12px 0 8px 0;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e9edf4;
+    }
+    .download-install-section .di-title {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #0b1e33;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* PREMIUM LED ICON BADGES — reused across How-to-Download steps,
+       About tags, and the Quick-Fact boxes. Each variant is a distinct
+       glowing gradient color. */
+    .led-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      animation: ledBadgePulse 2s ease-in-out infinite;
+    }
+    .led-badge svg {
+      width: 15px;
+      height: 15px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    @keyframes ledBadgePulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+    }
+    .led-badge.led-cyan   { background: linear-gradient(135deg,#00E5FF,#0072FF); box-shadow: 0 0 9px rgba(0,229,255,.75); }
+    .led-badge.led-green  { background: linear-gradient(135deg,#00E676,#00B248); box-shadow: 0 0 9px rgba(0,230,118,.75); }
+    .led-badge.led-purple { background: linear-gradient(135deg,#B388FF,#7C3CFF); box-shadow: 0 0 9px rgba(124,60,255,.75); }
+    .led-badge.led-orange { background: linear-gradient(135deg,#FFB300,#FF6D00); box-shadow: 0 0 9px rgba(255,109,0,.75); }
+    .led-badge.led-pink   { background: linear-gradient(135deg,#FF4D9D,#C2185B); box-shadow: 0 0 9px rgba(255,77,157,.75); }
+    .led-badge.led-teal   { background: linear-gradient(135deg,#1DE9B6,#00897B); box-shadow: 0 0 9px rgba(29,233,182,.75); }
+    .led-badge.led-red    { background: linear-gradient(135deg,#FF5252,#D50000); box-shadow: 0 0 9px rgba(255,82,82,.75); }
+    .led-badge.led-gold   { background: linear-gradient(135deg,#FFD54F,#FF8F00); box-shadow: 0 0 9px rgba(255,213,79,.75); }
+    .led-badge.led-blue   { background: linear-gradient(135deg,#448AFF,#2962FF); box-shadow: 0 0 9px rgba(68,138,255,.75); }
+
+    .download-install-section .di-title .di-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      border-radius: 9px;
+    }
+    .download-install-section .di-title .di-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .download-install-section .di-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-left: 4px;
+    }
+    .download-install-section .di-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.7rem;
+      color: #1e293b;
+      line-height: 1.4;
+      padding: 4px 0;
+    }
+    .download-install-section .di-item .di-led {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+    .download-install-section .di-item .di-led svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .download-install-section .di-item .di-text {
+      flex: 1;
+      font-weight: 500;
+      color: #0b1e33;
+    }
+    @media (max-width: 480px) {
+      .download-install-section { padding: 8px 10px; }
+      .download-install-section .di-title { font-size: 0.75rem; }
+      .download-install-section .di-item { font-size: 0.6rem; gap: 8px; }
+      .download-install-section .di-item .di-led { width: 18px; height: 18px; }
+    }
+
+    /* QUICK FACTS — unchanged */
+    .quick-facts-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 4px;
+    }
+    .quick-fact-box {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      border-top: 3px solid #16a34a;
+      overflow: hidden;
+    }
+    .quick-fact-head {
+      padding: 9px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #15803d;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .quick-fact-body {
+      border-top: 2px solid #06b6d4;
+      padding: 8px 12px;
+      background: #f0fdff;
+    }
+    .quick-fact-tag {
+      font-size: 0.72rem;
+      line-height: 1.6;
+      color: #1e293b;
+      padding: 5px 0;
+      border-bottom: 1px dashed #cffafe;
+    }
+    .quick-fact-tag:last-child { border-bottom: none; }
+    .quick-fact-tag.qf-hidden { display: none; }
+    .quick-fact-toggle {
+      margin-top: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #0891b2;
+      cursor: pointer;
+      display: inline-block;
+      user-select: none;
+    }
+    .quick-fact-toggle:hover { text-decoration: underline; }
+
   </style>
 </head>
 <body>
@@ -2285,6 +2970,17 @@
           <line x1="4" y1="6" x2="20" y2="6" class="menu-line top" />
           <line x1="4" y1="12" x2="20" y2="12" class="menu-line middle" />
           <line x1="4" y1="18" x2="20" y2="18" class="menu-line bottom" />
+        </svg>
+        <svg viewBox="0 0 24 24" width="22" height="22" class="menu-close-icon">
+          <defs>
+            <linearGradient id="menuCloseGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FF4D9D"/>
+              <stop offset="50%" stop-color="#7C3CFF"/>
+              <stop offset="100%" stop-color="#00E5FF"/>
+            </linearGradient>
+          </defs>
+          <line x1="5" y1="5" x2="19" y2="19" stroke="url(#menuCloseGrad)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="19" y1="5" x2="5" y2="19" stroke="url(#menuCloseGrad)" stroke-width="3" stroke-linecap="round"/>
         </svg>
         <span>MENU</span>
       </button>
@@ -2395,58 +3091,29 @@
           <div class="game-sub">
             <div class="info-row signup">
               <span class="svg-icon">
-                <svg viewBox="0 0 120 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                   <defs>
-                    <linearGradient id="giftGoldX" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#FFE66D"/>
-                      <stop offset="50%" stop-color="#FFB300"/>
-                      <stop offset="100%" stop-color="#E88900"/>
-                    </linearGradient>
-                    <linearGradient id="giftRedX" x1="0" y1="0" x2="1" y2="1">
+                    <radialGradient id="bonusLedStatic" cx="35%" cy="30%" r="75%">
+                      <stop offset="0%" stop-color="#FFF6B0"/>
+                      <stop offset="45%" stop-color="#FFD600"/>
+                      <stop offset="100%" stop-color="#FF8A00"/>
+                    </radialGradient>
+                    <linearGradient id="bonusRibbonStatic" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stop-color="#FF5278"/>
                       <stop offset="100%" stop-color="#C90035"/>
                     </linearGradient>
-                    <linearGradient id="moneyGreenX" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#B8FFD9"/>
-                      <stop offset="50%" stop-color="#00D978"/>
-                      <stop offset="100%" stop-color="#008B50"/>
-                    </linearGradient>
-                    <linearGradient id="moneyBlueX" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#B9E8FF"/>
-                      <stop offset="50%" stop-color="#2196F3"/>
-                      <stop offset="100%" stop-color="#0756C9"/>
-                    </linearGradient>
-                    <linearGradient id="moneyGoldX" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#FFF2A8"/>
-                      <stop offset="50%" stop-color="#FFD000"/>
-                      <stop offset="100%" stop-color="#D88900"/>
-                    </linearGradient>
                   </defs>
-                  <g class="cash cash1">
-                    <rect x="47" y="40" width="26" height="14" rx="3" fill="url(#moneyGreenX)" stroke="#E8FFF2" stroke-width="1.5"/>
-                    <circle cx="60" cy="47" r="4" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
-                    <text x="60" y="49.5" text-anchor="middle" font-size="6" font-weight="900" fill="#FFFFFF">₹</text>
-                  </g>
-                  <g class="cash cash2">
-                    <rect x="47" y="40" width="26" height="14" rx="3" fill="url(#moneyBlueX)" stroke="#E8F7FF" stroke-width="1.5"/>
-                    <circle cx="60" cy="47" r="4" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
-                    <text x="60" y="49.5" text-anchor="middle" font-size="7" font-weight="900" fill="#FFFFFF">$</text>
-                  </g>
-                  <g class="cash cash3">
-                    <rect x="47" y="40" width="26" height="14" rx="3" fill="url(#moneyGoldX)" stroke="#FFFBE0" stroke-width="1.5"/>
-                    <circle cx="60" cy="47" r="4" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
-                    <text x="60" y="49.5" text-anchor="middle" font-size="7" font-weight="900" fill="#FFFFFF">€</text>
-                  </g>
-                  <rect x="25" y="62" width="70" height="50" rx="7" fill="url(#giftGoldX)" stroke="#FFF1A8" stroke-width="2"/>
-                  <rect x="55" y="62" width="10" height="50" rx="2" fill="url(#giftRedX)"/>
-                  <rect x="25" y="75" width="70" height="10" rx="2" fill="url(#giftRedX)"/>
-                  <g class="gift-lid-x">
-                    <rect x="24" y="43" width="72" height="20" rx="5" fill="url(#giftGoldX)" stroke="#FFF1A8" stroke-width="2"/>
-                    <rect x="55" y="43" width="10" height="20" rx="2" fill="url(#giftRedX)"/>
-                    <path d="M60 43C45 31 35 35 39 43 C43 50 52 47 60 43Z" fill="url(#giftRedX)"/>
-                    <path d="M60 43C75 31 85 35 81 43 C77 50 68 47 60 43Z" fill="url(#giftRedX)"/>
-                  </g>
-                  <path d="M34 91V103" stroke="#FFF8D0" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+                  <circle cx="32" cy="32" r="24" fill="url(#bonusLedStatic)" stroke="#FFFFFF" stroke-width="2">
+                    <animate attributeName="r" values="22;25;22" dur="1.5s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="32" cy="32" r="27" fill="none" stroke="#00FFFF" stroke-width="2" opacity="0.5">
+                    <animate attributeName="opacity" values="0.15;0.7;0.15" dur="1.5s" repeatCount="indefinite"/>
+                  </circle>
+                  <rect x="20" y="30" width="24" height="15" rx="2.5" fill="#ffffff"/>
+                  <rect x="20" y="24" width="24" height="7" rx="2" fill="#ffffff"/>
+                  <rect x="30" y="24" width="4" height="21" fill="url(#bonusRibbonStatic)"/>
+                  <path d="M32 24c-5-7-11-4-8 1 2 3 6 1 8-1z" fill="url(#bonusRibbonStatic)"/>
+                  <path d="M32 24c5-7 11-4 8 1-2 3-6 1-8-1z" fill="url(#bonusRibbonStatic)"/>
                 </svg>
               </span>
               <span class="label">Sign Up Bonus</span>
@@ -2454,53 +3121,26 @@
             </div>
             <div class="info-row withdraw">
               <span class="svg-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" aria-label="Premium Bank">
+                <svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                   <defs>
-                    <linearGradient id="roofRainbow" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#00E5FF"/>
-                      <stop offset="30%" stop-color="#4169FF"/>
-                      <stop offset="65%" stop-color="#9C42FF"/>
-                      <stop offset="100%" stop-color="#FF3CAC"/>
-                    </linearGradient>
-                    <linearGradient id="buildingRainbow" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#00D4FF"/>
-                      <stop offset="35%" stop-color="#007BFF"/>
-                      <stop offset="70%" stop-color="#6C3BFF"/>
-                      <stop offset="100%" stop-color="#B51EFF"/>
-                    </linearGradient>
-                    <linearGradient id="goldPremium" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#FFF7A8"/>
-                      <stop offset="35%" stop-color="#FFD84D"/>
-                      <stop offset="70%" stop-color="#FF9F1C"/>
-                      <stop offset="100%" stop-color="#E05A00"/>
-                    </linearGradient>
-                    <linearGradient id="columnGlass" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#FFFFFF"/>
-                      <stop offset="45%" stop-color="#B8F7FF"/>
-                      <stop offset="100%" stop-color="#6CDEFF"/>
-                    </linearGradient>
-                    <filter id="premiumGlow">
-                      <feGaussianBlur stdDeviation="2" result="blur"/>
-                      <feMerge>
-                        <feMergeNode in="blur"/>
-                        <feMergeNode in="SourceGraphic"/>
-                      </feMerge>
-                    </filter>
+                    <radialGradient id="wdLedStatic" cx="35%" cy="30%" r="75%">
+                      <stop offset="0%" stop-color="#B8FFE0"/>
+                      <stop offset="45%" stop-color="#00E676"/>
+                      <stop offset="100%" stop-color="#00875A"/>
+                    </radialGradient>
                   </defs>
-                  <path d="M10 35L50 10L90 35Z" fill="url(#roofRainbow)" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round" filter="url(#premiumGlow)"/>
-                  <path d="M21 31L50 14L79 31" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".75"/>
-                  <rect x="14" y="34" width="72" height="48" rx="6" fill="url(#buildingRainbow)" stroke="#8FEFFF" stroke-width="2.5"/>
-                  <rect x="20" y="42" width="12" height="31" rx="3" fill="url(#columnGlass)" stroke="#FFFFFF" stroke-width="1.5"/>
-                  <rect x="44" y="42" width="12" height="31" rx="3" fill="url(#columnGlass)" stroke="#FFFFFF" stroke-width="1.5"/>
-                  <rect x="68" y="42" width="12" height="31" rx="3" fill="url(#columnGlass)" stroke="#FFFFFF" stroke-width="1.5"/>
-                  <path d="M23 45V68" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                  <path d="M47 45V68" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                  <path d="M71 45V68" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                  <rect x="8" y="75" width="84" height="10" rx="4" fill="url(#goldPremium)" stroke="#FFF4A0" stroke-width="2"/>
-                  <circle cx="50" cy="23" r="9" fill="url(#goldPremium)" stroke="#FFF8C4" stroke-width="2" filter="url(#premiumGlow)"/>
-                  <text x="50" y="27" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B25B8">₹</text>
-                  <path d="M12 48L16 52L12 56L8 52Z" fill="#00FFD5"/>
-                  <path d="M88 48L92 52L88 56L84 52Z" fill="#FFD84D"/>
+                  <circle cx="32" cy="32" r="24" fill="url(#wdLedStatic)" stroke="#FFFFFF" stroke-width="2">
+                    <animate attributeName="r" values="22;25;22" dur="1.5s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="32" cy="32" r="27" fill="none" stroke="#00FFFF" stroke-width="2" opacity="0.5">
+                    <animate attributeName="opacity" values="0.15;0.7;0.15" dur="1.5s" repeatCount="indefinite"/>
+                  </circle>
+                  <path d="M32 18L18 26h28L32 18z" fill="#ffffff"/>
+                  <rect x="18" y="27" width="28" height="2.5" fill="#ffffff"/>
+                  <rect x="21" y="31" width="3" height="10" fill="#ffffff"/>
+                  <rect x="30.5" y="31" width="3" height="10" fill="#ffffff"/>
+                  <rect x="40" y="31" width="3" height="10" fill="#ffffff"/>
+                  <rect x="18" y="43" width="28" height="2.5" fill="#ffffff"/>
                 </svg>
               </span>
               <span class="label">Min. Withdraw</span>
@@ -2653,8 +3293,8 @@
       </div>
       <!-- END FEATURE BAR -->
 
-      <!-- NEW DOWNLOAD BUTTON -->
-      <button class="apk-download-btn" id="detailDownloadBtn">
+      <!-- NEW DOWNLOAD BUTTON — original position, always visible, plain GREEN LED glow -->
+      <button class="apk-download-btn dl-green-btn" id="detailDownloadBtn">
         <svg class="download-icon" viewBox="0 0 64 64" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="iconHDColor" x1="0" y1="0" x2="1" y2="1">
@@ -2678,16 +3318,17 @@
       </div>
     </div>
 
-    <!-- TAG SECTION — Top Offers + UNIQUE GAME TAGS (text only) -->
-    <div class="tag-section">
-      <div class="tag-title">
-        <span class="svg-icon" style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#00bcd4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        </span>
-        <span>Top Offers</span>
+    <!-- TAG SECTION WITH GREEN BORDER -->
+    <div class="tag-section-green-border">
+      <div class="tag-section">
+        <div class="tag-title" id="tagTitleWithIcon">
+          <span style="display:none;">icon removed</span>
+          <span>Top Offers</span>
+        </div>
+        <div class="tag-grid" id="tagGridContainer"></div>
       </div>
-      <div class="tag-grid" id="tagGridContainer"></div>
     </div>
+    <!-- END TAG SECTION WITH GREEN BORDER -->
 
     <!-- SYSTEM REQUIREMENTS -->
     <section class="system-requirements">
@@ -2785,22 +3426,44 @@
         </span>
         <span class="option-name">About <span class="app-name-about" id="appNameAbout">Game Name</span></span>
       </div>
-      <div class="info-option">
-        <span class="option-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-        </span>
-        <span class="option-name">How to Download &amp; Install</span>
-        <span class="option-lock">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-        </span>
+
+      <!-- HOW TO DOWNLOAD & INSTALL SECTION - UPDATED -->
+      <div class="download-install-section" id="downloadInstallSection">
+        <div class="di-title">
+          <span class="di-icon led-badge led-cyan">
+            <svg viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-1.44-8.77A5.5 5.5 0 0 1 16.2 7.02 4.5 4.5 0 0 1 17.5 16H7z"/><path d="M12 11v7"/><polyline points="9 15 12 18 15 15"/></svg>
+          </span>
+          <span>How to Download &amp; <span id="downloadGameName">Game Name</span></span>
+        </div>
+        <div class="di-list">
+          <div class="di-item">
+            <span class="di-led led-badge led-green">
+              <svg viewBox="0 0 24 24"><path d="M12 3v12"/><polyline points="7 12 12 17 17 12"/><path d="M5 19h14"/><path d="M6 6l2-2h8l2 2" opacity="0"/></svg>
+            </span>
+            <span class="di-text">Click the green Download button above</span>
+          </div>
+          <div class="di-item">
+            <span class="di-led led-badge led-purple">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </span>
+            <span class="di-text">Allow unknown sources: Android Settings → Security → Unknown Sources</span>
+          </div>
+          <div class="di-item">
+            <span class="di-led led-badge led-orange">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 12v5"/><polyline points="9.5 14.5 12 17 14.5 14.5"/></svg>
+            </span>
+            <span class="di-text">Open the downloaded APK file and tap Install</span>
+          </div>
+          <div class="di-item">
+            <span class="di-led led-badge led-blue">
+              <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/><path d="M9.5 9l2.5-2 2.5 2" stroke-width="1.8"/></svg>
+            </span>
+            <span class="di-text">Open the app after installation completes</span>
+          </div>
+        </div>
       </div>
+      <!-- END HOW TO DOWNLOAD & INSTALL SECTION -->
+
       <div class="info-option">
         <span class="option-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2810,6 +3473,56 @@
         </span>
         <span class="option-name">Safety &amp; Security</span>
       </div>
+
+      <!-- SAFETY & SECURITY CONTENT — generic legal/safety info, same for every app -->
+      <div class="safety-security-box">
+        <div class="safety-tag">
+          <span class="safety-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="url(#safetyGrad1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="safetyGrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00E5FF"/><stop offset="100%" stop-color="#00E676"/></linearGradient></defs>
+              <rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </span>
+          <span class="safety-text">18+ Only: This app is intended strictly for adult users. Please verify your local age and legal requirements before registering.</span>
+        </div>
+        <div class="safety-tag">
+          <span class="safety-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="url(#safetyGrad2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="safetyGrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFD600"/><stop offset="100%" stop-color="#FF3B30"/></linearGradient></defs>
+              <path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            </svg>
+          </span>
+          <span class="safety-text">Play Responsibly: Games involving cash rewards carry financial risk. Set a personal limit and never spend beyond your means.</span>
+        </div>
+        <div class="safety-tag">
+          <span class="safety-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="url(#safetyGrad3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="safetyGrad3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7C3CFF"/><stop offset="100%" stop-color="#FF1493"/></linearGradient></defs>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>
+            </svg>
+          </span>
+          <span class="safety-text">Data Privacy: Only share the mobile number and OTP required for account verification. Never share your password with anyone.</span>
+        </div>
+        <div class="safety-tag">
+          <span class="safety-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="url(#safetyGrad4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="safetyGrad4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00FFFF"/><stop offset="100%" stop-color="#087CFF"/></linearGradient></defs>
+              <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+            </svg>
+          </span>
+          <span class="safety-text">Official Source Only: Always download the APK from this page's verified link to avoid tampered or fraudulent copies.</span>
+        </div>
+        <div class="safety-tag">
+          <span class="safety-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="url(#safetyGrad5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="safetyGrad5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00E676"/><stop offset="100%" stop-color="#FFD600"/></linearGradient></defs>
+              <path d="M4 4h16v4H4z"/><path d="M4 10h16v10H4z"/><path d="M9 14h6"/>
+            </svg>
+          </span>
+          <span class="safety-text">Legal Compliance: Real-money gaming laws vary by state and country. Check that such games are permitted in your region before playing.</span>
+        </div>
+      </div>
+      <!-- END SAFETY & SECURITY CONTENT -->
     </div>
     <!-- END APP INFO OPTIONS -->
 
@@ -2822,6 +3535,7 @@
       </div>
       <div class="referral-content" id="referralContent">
         <span>Invite your friends to <strong id="refGameName">Game Name</strong> and earn</span>
+
         <span class="ref-bonus" id="refBonusAmount">₹25</span>
         <span>for each successful referral! Use your unique referral code:</span>
         <span class="ref-code" id="refCode">YONO7X9P</span>
@@ -2849,7 +3563,11 @@
         </span>
         <span>Other Related Yono Games</span>
       </div>
-      <div class="related-grid" id="relatedGrid"></div>
+      <!-- RELATED GRID - ALL 74 GAMES IN HOME PAGE STYLE -->
+      <div class="related-grid-home" id="relatedGridHome"></div>
+
+      <!-- 5 QUICK-FACT EXPANDABLE BOXES — after the last related game's download button -->
+      <div class="quick-facts-wrap" id="quickFactsWrap"></div>
     </div>
   </div>
 
@@ -2975,6 +3693,33 @@
   </div>
 </div>
 
+<!-- FLOATING SCROLL-TO-TOP BUTTON — hidden until user scrolls, shown on Home & Next page -->
+<div class="scroll-top-fab" id="scrollTopFab" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5"/>
+    <path d="M5 12l7-7 7 7"/>
+  </svg>
+</div>
+
+<!-- STICKY SCROLL-TRIGGERED DOWNLOAD BAR — appears at the bottom-center only
+     while viewing a game's detail page and scrolled down; mirrors the same
+     download link as the main button above Top Offers. -->
+<button class="apk-download-btn dl-sticky-btn" id="detailDownloadBtnSticky">
+  <svg class="download-icon" viewBox="0 0 64 64" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="iconHDColorSticky" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#00E5FF"/>
+        <stop offset="35%" stop-color="#B388FF"/>
+        <stop offset="70%" stop-color="#FF4D9D"/>
+        <stop offset="100%" stop-color="#FFD54F"/>
+      </linearGradient>
+    </defs>
+    <path d="M32 7V39M17 28L32 43L47 28" fill="none" stroke="url(#iconHDColorSticky)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10 45V51 Q10 58 17 58 H47 Q54 58 54 51 V45" fill="none" stroke="url(#iconHDColorSticky)" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+  <span>Download APK</span>
+</button>
+
 <script>
   (function() {
     const roundStars = document.querySelectorAll("#roundStars span");
@@ -3006,7 +3751,26 @@
 
     // --------------------------------------------------------------
     // 74 Original Games — Updated with unique details
+    // 74 colors array for premium LED badges
     // --------------------------------------------------------------
+    const numberColors = [
+      "#FF0000", "#0000FF", "#008000", "#800080", "#FFA500",
+      "#FFD700", "#00FFFF", "#008080", "#FFC0CB", "#4B0082",
+      "#00FF00", "#FFBF00", "#7F00FF", "#FF00FF", "#FF7F50",
+      "#50C878", "#FF007F", "#87CEEB", "#708090", "#000080",
+      "#AAF0D1", "#40E0D0", "#E6E6FA", "#8E4585", "#DC143C",
+      "#E0115F", "#CD7F32", "#B87333", "#7FFFD4", "#7FFF00",
+      "#800000", "#808000", "#3B2F2F", "#4169E1", "#C0C0C0",
+      "#708090", "#B8860B", "#D2691E", "#F0E68C", "#FFDB58",
+      "#FFDAB9", "#FA8072", "#FBCEB1", "#F28500", "#FF2400",
+      "#800020", "#722F37", "#0F52BA", "#007FFF", "#0047AB",
+      "#CCCCFF", "#DA70D6", "#E0B0FF", "#C8A2C8", "#F138FF",
+      "#E30B5C", "#FC5A8D", "#FFF700", "#FFFDD0", "#85BB65",
+      "#228B22", "#00A86B", "#2E8B57", "#0077BE", "#4682B4",
+      "#1560BD", "#36454F", "#414A4C", "#353839", "#A0522D",
+      "#CC5500", "#665D1E", "#E2725B", "#4A2E1B"
+    ];
+
     const games = [
       { name: "YONO NEW APP", altName: "All Yono Games", bonus: "₹45", withdrawal: "₹100", downloadUrl: "https://www.earntp.com/m/jm9n7r", img: "https://i.ibb.co/0RZPw4wH/Screenshot-20260814-093236.jpg" },
       { name: "567 SLOTS", altName: "567 SLOTS Game", bonus: "₹45", withdrawal: "₹100", downloadUrl: "https://join567slots0.com/?code=4NYF487URJ6&t=1781505684", img: "https://i.ibb.co/QWVBtNG/Screenshot-20260814-045334.jpg" },
@@ -3154,56 +3918,391 @@
     });
 
     // --------------------------------------------------------------
-    // DYNAMIC UNIQUE TAG GENERATION SYSTEM
-    // Every About tag is generated from the current app and position.
-    // No shared paragraph pool is used, so tags cannot repeat between apps.
+    // UNIFIED TAG SYSTEM (Top Offers + About) — 74 games, fully unique
+    // Every rendered tag (title+content) is checked against a single
+    // global registry. Any collision is auto-resolved by the dynamic
+    // uniqueness engine below before it ever reaches the page.
     // --------------------------------------------------------------
-    const usedAboutTags = new Set();
-    function generateUniqueTags(gameName, altName, bonus) {
-      const cleanName = String(gameName || 'Game').trim();
-      const cleanAlt = String(altName || cleanName).trim();
-      const seed = [...cleanName].reduce((n, c, i) => n + c.charCodeAt(0) * (i + 11), 0);
-      const lower = cleanName.toLowerCase();
-      const type = /rummy/.test(lower) ? 'rummy' :
-        /teen|patti/.test(lower) ? 'teen-patti' :
-        /bingo/.test(lower) ? 'bingo' :
-        /slot|spin/.test(lower) ? 'slots' :
-        /arcade/.test(lower) ? 'arcade' :
-        /vip|club/.test(lower) ? 'vip' : 'multi-game';
-      const typeText = {
-        rummy: 'card-table play', 'teen-patti': 'three-card play',
-        bingo: 'number-board rounds',
-        slots: 'reel-based sessions', arcade: 'arcade challenges',
-        vip: 'member-focused play', 'multi-game': 'mixed game sessions'
-      }[type];
-      const tone = [
-        'Quick reference', 'Player note', 'Format guide', 'Feature snapshot',
-        'Session detail', 'Discovery point', 'Access note'
-      ];
-      const facts = [
-        `${cleanName} is listed here as a ${typeText} option; compare the in-app rules before joining a round.`,
-        `The ${cleanAlt} entry is identified by its own title and artwork, making it easier to distinguish in this directory.`,
-        `${cleanName} uses a ${['compact', 'bright', 'straightforward', 'fast-moving', 'focused'][seed % 5]} presentation for browsing available game sections.`,
-        `For ${cleanName}, review the displayed bonus of ${bonus || 'the listed amount'} and the platform terms before download.`,
-        `${cleanName} is the app name for this listing; ${cleanAlt} is the alternate label shown with its information.`,
-        `This ${typeText} listing for ${cleanName} is presented for discovery, with availability and rules controlled by the original operator.`,
-        `Before using ${cleanAlt}, check age eligibility, payment conditions, withdrawal rules, and regional availability on the official platform.`,
-        `${cleanName} appears in the directory with a separate download destination; verify the source and permissions on your device.`
-      ];
-      const order = [0, 1, 2, 3, 4, 5].map((_, i) => (seed + i * 3) % facts.length);
-      const selected = [];
-      order.forEach((factIndex, position) => {
-        let text = `${tone[(seed + position) % tone.length]} — ${facts[factIndex]}`;
-        let attempt = 0;
-        while (usedAboutTags.has(text) && attempt < 20) {
-          text = `${tone[(seed + position + attempt + 1) % tone.length]} ${position + attempt + 2} — ${facts[factIndex]} Reference ${cleanName} ${position + attempt + 2}.`;
-          attempt++;
-        }
-        usedAboutTags.add(text);
-        selected.push(text);
-      });
-      return selected;
+    const globalUniqueTagSet = new Set();
+    const gameTagBlocksCache = {};
+
+    function hashSeedFrom(str) {
+      let h = 0;
+      for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+      return h;
     }
+
+    function classifyGameType(name) {
+      const n = name.toLowerCase();
+      if (/rummy/.test(n)) return 'rummy';
+      if (/slot|spin/.test(n)) return 'slots';
+      if (/teen|patti/.test(n)) return 'teenpatti';
+      if (/bingo/.test(n)) return 'bingo';
+      if (/arcade/.test(n)) return 'arcade';
+      if (/vip|club/.test(n)) return 'vip';
+      return 'casual';
+    }
+
+    function fillTokens(str, nameRef, bonus, withdrawal) {
+      return str.split('{NAME}').join(nameRef)
+                .split('{BONUS}').join(bonus)
+                .split('{WITHDRAWAL}').join(withdrawal);
+    }
+
+    function escapeForRegex(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function countNameMentions(text, gameName, altName) {
+      // Count the brand reference once per occurrence (avoids double-counting
+      // when altName contains gameName as a substring, e.g. "X" inside "X APK").
+      const nameRef = altName || gameName;
+      const re = new RegExp(escapeForRegex(nameRef), 'gi');
+      return (text.match(re) || []).length;
+    }
+
+    // Guarantees global uniqueness of a piece of tag content. If the exact
+    // text already exists anywhere else in the site (any app, any position),
+    // it is automatically rewritten with a distinguishing clause.
+    function makeContentUnique(content, gameName, refTag, allowNameClause) {
+      if (!globalUniqueTagSet.has(content)) {
+        globalUniqueTagSet.add(content);
+        return content;
+      }
+      const nameClauses = [
+        ' This detail is specific to ' + gameName + '.',
+        ' ' + gameName + ' calls this out for its players.',
+        ' A distinct part of the ' + gameName + ' experience.',
+        ' Noted separately for ' + gameName + '.'
+      ];
+      const neutralClauses = [
+        ' (Ref: ' + refTag + ')',
+        ' — listed separately for this app.',
+        ' [Entry ' + refTag + ']',
+        ' (See app note ' + refTag + ')'
+      ];
+      const clauses = allowNameClause ? nameClauses : neutralClauses;
+      let attempt = content;
+      let i = 0;
+      while (globalUniqueTagSet.has(attempt) && i < clauses.length) {
+        attempt = content + clauses[i];
+        i++;
+      }
+      let extra = 0;
+      while (globalUniqueTagSet.has(attempt)) {
+        attempt = content + ' (' + refTag + '-' + extra + ')';
+        extra++;
+      }
+      globalUniqueTagSet.add(attempt);
+      return attempt;
+    }
+
+    // ---------------- OFFER POOLS (Top Offers section) ----------------
+    const offerPools = {
+      rummy: [
+        { title: '{NAME} Welcome Bonus', content: 'New players get {BONUS} instantly on signup — enough to try a few hands of Points or Pool Rummy before depositing.' },
+        { title: 'Fast UPI Withdrawals', content: 'Cash out starting from {WITHDRAWAL}, with UPI transfers on {NAME} usually settling within a few hours.' },
+        { title: 'Multiple Rummy Formats', content: '{NAME} covers Points, Pool and Deals Rummy, so you can switch styles without switching apps.' },
+        { title: 'Refer & Earn on {NAME}', content: 'Share your code and earn bonus chips whenever a friend signs up and makes their first deposit.' },
+        { title: 'Verified Fair Play', content: 'Shuffle and deal on {NAME} use a certified random algorithm, so every round is dealt fairly.' },
+        { title: 'Round-the-Clock Support', content: 'In-app chat support on {NAME} answers withdrawal and gameplay questions any time of day.' },
+        { title: 'Light APK, Quick Install', content: '{NAME} keeps its APK compact, so installation and updates finish in under a minute on most phones.' },
+        { title: 'Daily Login Rewards', content: 'Open {NAME} once a day to collect free chips, with bigger rewards for longer streaks.' },
+        { title: 'Beginner-Friendly Tables', content: 'Low buy-in tables on {NAME} make it easy to learn the game before moving up in stakes.' },
+        { title: 'Secure Account Login', content: 'Mobile OTP verification protects your {NAME} account from unauthorized access.' }
+      ],
+      slots: [
+        { title: '{NAME} Signup Bonus', content: 'Claim {BONUS} free credit the moment you register on {NAME}, no deposit required to start spinning.' },
+        { title: 'Quick Cashouts', content: 'Withdrawals from {WITHDRAWAL} are processed through UPI, usually clearing within hours on {NAME}.' },
+        { title: 'Wide Theme Selection', content: '{NAME} rotates through Egyptian, fruit-machine and adventure themed reels, with new sets added regularly.' },
+        { title: 'Free Daily Spins', content: 'Log into {NAME} each day for a free spin on the bonus wheel, no purchase needed.' },
+        { title: 'Small Install Size', content: 'The {NAME} APK is built to install quickly even on budget phones with limited storage.' },
+        { title: 'Transparent Payout Rates', content: 'Each slot on {NAME} lists its payout percentage so you know the odds before you spin.' },
+        { title: '24/7 Player Support', content: 'Live chat support on {NAME} handles deposit, withdrawal and technical queries at any hour.' },
+        { title: 'Referral Rewards', content: 'Invite friends to {NAME} and earn bonus credit once they complete their first spin session.' },
+        { title: 'Adjustable Bet Levels', content: 'Bet sizes on {NAME} scale from small test spins up to higher stakes for confident players.' },
+        { title: 'Secure Login', content: 'OTP-based login keeps your {NAME} account and balance protected.' }
+      ],
+      teenpatti: [
+        { title: '{NAME} Signup Reward', content: 'New accounts on {NAME} receive {BONUS} to try a few blind or seen hands right away.' },
+        { title: 'Fast Payouts', content: 'Withdraw from {WITHDRAWAL} with most {NAME} payouts clearing within a few hours via UPI.' },
+        { title: 'Classic & Joker Variants', content: '{NAME} runs classic Teen Patti alongside joker and side-show variants for extra variety.' },
+        { title: 'Practice Tables Included', content: 'Free chip practice tables let new players learn {NAME}\'s rules with zero risk.' },
+        { title: 'Refer & Earn', content: 'Bring a friend to {NAME} and both of you get bonus chips after their first deposit.' },
+        { title: 'Quick Table Matching', content: '{NAME} finds you an open table within seconds, even during busy hours.' },
+        { title: 'Compact APK Size', content: '{NAME} installs fast and doesn\'t eat up much phone storage.' },
+        { title: 'Round-the-Clock Help', content: 'Support chat on {NAME} is available any time for account or table issues.' },
+        { title: 'Daily Chip Bonus', content: 'Claim a small free chip bonus every day just by opening {NAME}.' },
+        { title: 'Secure OTP Login', content: 'Every {NAME} login is protected with one-time mobile verification.' }
+      ],
+      bingo: [
+        { title: '{NAME} Welcome Credit', content: 'Sign up on {NAME} and receive {BONUS} to try your first few bingo cards.' },
+        { title: 'Fast Prize Withdrawals', content: 'Cash prizes withdraw from {WITHDRAWAL}, typically processed within hours on {NAME}.' },
+        { title: '75-Ball & 90-Ball Rooms', content: '{NAME} runs both formats, so you can pick the pace and pattern you prefer.' },
+        { title: 'Free Daily Cards', content: '{NAME} hands out a free bingo card each day just for logging in.' },
+        { title: 'Social Chat Rooms', content: 'Chat with other players while numbers are called on {NAME}, making rooms feel lively.' },
+        { title: 'Refer & Earn Bonus', content: 'Invite friends to {NAME} and collect bonus credit once they join a room.' },
+        { title: 'Quick Room Join', content: '{NAME} drops you into an open room within seconds of tapping play.' },
+        { title: 'Light App Size', content: '{NAME}\'s APK is kept small so it installs quickly on any phone.' },
+        { title: 'Round-the-Clock Support', content: 'Support chat handles prize and account questions on {NAME} at any hour.' },
+        { title: 'Secure Account Access', content: 'OTP login keeps your {NAME} balance and prizes protected.' }
+      ],
+      arcade: [
+        { title: '{NAME} Signup Bonus', content: 'New players collect {BONUS} on registration, redeemable across {NAME}\'s mini-games.' },
+        { title: 'Fast Token Cashout', content: 'Convert arcade tokens to cash from {WITHDRAWAL}, with quick UPI processing on {NAME}.' },
+        { title: 'Multiple Mini-Games', content: '{NAME} bundles puzzle, reaction and memory games into a single lobby.' },
+        { title: 'Daily Challenge Rewards', content: 'A fresh challenge appears every 24 hours on {NAME}, each with its own token payout.' },
+        { title: 'Refer & Earn Tokens', content: 'Share {NAME} with friends and earn bonus tokens once they play their first mini-game.' },
+        { title: 'Compact Install', content: '{NAME}\'s APK stays lightweight, so setup takes under a minute.' },
+        { title: 'Global Leaderboards', content: 'Compare high scores with players everywhere on {NAME}\'s live leaderboard.' },
+        { title: '24/7 Support Chat', content: 'Get help with tokens or account issues on {NAME} any time of day.' },
+        { title: 'Free Practice Rounds', content: 'Try any mini-game on {NAME} in practice mode before spending tokens.' },
+        { title: 'Secure OTP Login', content: '{NAME} protects accounts with one-time mobile verification at login.' }
+      ],
+      vip: [
+        { title: '{NAME} VIP Welcome Bonus', content: 'New VIP members receive {BONUS} plus priority access to high-stakes tables.' },
+        { title: 'Fast VIP Withdrawals', content: 'VIP payouts on {NAME} start from {WITHDRAWAL} and are processed ahead of standard requests.' },
+        { title: 'Tiered Loyalty Program', content: '{NAME} rewards regular play with tier upgrades from Bronze up to Diamond.' },
+        { title: 'Dedicated Account Support', content: 'VIP members on {NAME} get a direct support line instead of the general queue.' },
+        { title: 'Refer & Earn Extra', content: 'VIP referral bonuses on {NAME} pay out more than the standard referral rate.' },
+        { title: 'Exclusive Tournaments', content: '{NAME} runs VIP-only tournaments with lighter competition and bigger prize pools.' },
+        { title: 'Cashback on Losses', content: '{NAME} credits a percentage of losses back to active VIP accounts.' },
+        { title: 'Compact APK', content: 'Even with premium features, {NAME}\'s app install stays quick and lightweight.' },
+        { title: 'Birthday & Milestone Gifts', content: '{NAME} sends bonus credit automatically on your account anniversary.' },
+        { title: 'Secure Priority Login', content: 'VIP accounts on {NAME} use OTP verification with priority server access.' }
+      ],
+      casual: [
+        { title: '{NAME} Signup Bonus', content: 'Register on {NAME} and receive {BONUS} to explore its mix of game modes.' },
+        { title: 'Fast Withdrawals', content: 'Payouts start from {WITHDRAWAL} and typically clear within a few hours on {NAME}.' },
+        { title: 'Variety of Game Modes', content: '{NAME} blends card, spin and casual mini-games into one app.' },
+        { title: 'Daily Login Rewards', content: 'Open {NAME} each day to collect small bonuses that add up over the week.' },
+        { title: 'Refer & Earn', content: 'Invite friends to {NAME} and earn bonus credit after their first session.' },
+        { title: 'Light App Size', content: '{NAME} installs quickly without taking up much phone storage.' },
+        { title: '24/7 Support Chat', content: 'Get help with your {NAME} account or a payout at any hour.' },
+        { title: 'Secure OTP Login', content: 'One-time mobile verification protects every {NAME} account.' },
+        { title: 'Regular Content Updates', content: '{NAME} adds new features and events on a monthly basis.' },
+        { title: 'Beginner-Friendly Start', content: 'A short in-app guide helps new users get comfortable with {NAME} in under a minute.' }
+      ]
+    };
+
+    // ---------------- ABOUT POOLS (About section, text-only tags) ----------------
+    const aboutPools = {
+      rummy: [
+        '{NAME} deals cards in under five seconds, keeping matches fast-paced from the very first hand.',
+        'Points, Pool and Deals rummy variants are all available, letting you switch formats whenever you like.',
+        'A live leaderboard updates after every match, so you always know where you rank among other {NAME} players.',
+        'Win three hands back to back and the streak bonus kicks in automatically with extra chips.',
+        'Matchmaking on {NAME} groups players of similar skill within a few seconds for fairer games.',
+        'New players get a free practice table stocked with chips, no real money required to learn the rules.',
+        'Inviting a friend to {NAME} can earn you referral chips once they complete their first deposit.',
+        'Table stakes range from beginner-friendly to high-roller, so your bankroll decides the pace.',
+        'The scoring system in {NAME} follows standard 13-card rules with pure sequence requirements.',
+        'Daily missions refresh every morning, rewarding consistent play with small chip bonuses.',
+        'Joker cards rotate each round, adding a layer of strategy to every {NAME} hand.',
+        'Support chat is built directly into the lobby, so help is never more than a tap away.',
+        '{NAME} keeps a hand history log, useful for reviewing your last few games.',
+        'Table themes change seasonally, giving regular players a reason to keep coming back to {NAME}.',
+        'Auto-arrange sorts your cards by suit and sequence the moment they\'re dealt.',
+        'Cash tables and free tables run side by side, so {NAME} suits both casual and serious players.'
+      ],
+      slots: [
+        '{NAME} runs five-reel machines with twenty paylines across a rotating set of themes.',
+        'A progressive jackpot builds with every spin placed network-wide and can hit on any turn.',
+        'Landing three scatter symbols triggers up to twenty free spins with a 3x multiplier.',
+        'Logging into {NAME} daily unlocks a spin-the-wheel bonus for coins or free spin tickets.',
+        'Slot tournaments pit fifty players against each other on the same machine for a cash prize.',
+        'Auto-spin lets you set a spin count and step away while the reels keep turning.',
+        'New themes are added monthly based on player voting inside {NAME}.',
+        'A bonus-buy option skips the wait, letting you jump straight into the bonus round.',
+        'Bet sizes adjust in small increments, so {NAME} works for both cautious and bold players.',
+        'Wild symbols substitute for nearly anything except the scatter, boosting your odds each spin.',
+        'A history tab in {NAME} tracks your last fifty spins and their outcomes.',
+        'Weekend bonus rounds double the free spin rewards for a limited window.',
+        'Sound and animation settings in {NAME} can be tuned down for quieter, low-key play.',
+        'Loyalty points accumulate per spin and convert into bonus credit over time.',
+        'A demo mode lets new visitors try {NAME}\'s reels before committing real balance.',
+        'Multi-line wins are calculated instantly with a clear payout breakdown after each spin.'
+      ],
+      teenpatti: [
+        '{NAME} offers both Blind and Seen betting, letting you choose your risk level each round.',
+        'The Side Show option lets two players compare cards privately mid-round for a quick decision.',
+        'A rotating joker card changes the winning combinations every few hands in {NAME}.',
+        'Quick Play tables cap each turn at ten seconds for a faster, sharper pace.',
+        'Free practice chips are available so newcomers can learn {NAME}\'s rules risk-free.',
+        'In-game emojis and a chat panel keep tables social without leaving the app.',
+        'Jackpot tables carry higher entry fees but prize pools can climb to 100x the buy-in.',
+        '{NAME} shows a running pot total so every player can track the stakes live.',
+        'Table history lets you review your last several hands and outcomes.',
+        'Private tables can be created for playing only with friends inside {NAME}.',
+        'A boot amount sets the minimum ante before cards are even dealt.',
+        'Muflis and AK47 variants are available alongside the classic ruleset.',
+        'Daily login streaks in {NAME} add up to bonus chips over a week.',
+        'Low, medium and high stake rooms are separated so bankrolls stay comfortable.',
+        '{NAME} refreshes its table list every few minutes to keep matchmaking quick.',
+        'A pack option lets cautious players fold early and preserve their chip stack.'
+      ],
+      bingo: [
+        '{NAME} runs both 75-ball and 90-ball rooms, playable with up to four cards at once.',
+        'Early Bird rounds reward players who mark off numbers within the first several calls.',
+        'A built-in chat panel keeps bingo rooms social while numbers are called.',
+        'Power-ups like auto-mark or a speed boost can be activated for a single round.',
+        'Community rooms in {NAME} pool player contributions toward a shared jackpot.',
+        'Happy Hour windows double prizes and lower card prices at set times each day.',
+        'Auto-daub marks your numbers automatically so you never miss a call.',
+        '{NAME} rotates special pattern rounds beyond the standard full-house win.',
+        'A results ticker shows recent room winners so you can gauge how active tables are.',
+        'Card bundles let you buy several cards at once for busier rooms in {NAME}.',
+        'Night Owl sessions run late with smaller crowds and better odds per card.',
+        'Room themes change with the seasons, keeping {NAME}\'s lobby visually fresh.',
+        'A quick-join button drops you into the next open room within seconds.',
+        'Daily bonus cards are handed out free just for opening {NAME}.',
+        'Chat badges reward regular players inside {NAME}\'s community rooms.',
+        'Ticket history keeps a record of your last several bingo sessions.'
+      ],
+      arcade: [
+        '{NAME} bundles puzzle challenges, reaction tests and memory games into one lobby.',
+        'Arcade tokens earned from mini-games can be exchanged for bonus entries elsewhere in {NAME}.',
+        'A new daily challenge appears every 24 hours with its own token reward.',
+        'Global and friend leaderboards track high scores across every mini-game.',
+        'Consistent daily play builds a streak multiplier on token earnings.',
+        'Holiday events bring limited-time mini-games and themed rewards to {NAME}.',
+        'Each mini-game in {NAME} takes under two minutes, built for quick sessions.',
+        'A practice mode lets you try new mini-games without spending tokens.',
+        'Achievements unlock badges that show on your {NAME} profile.',
+        'Difficulty ramps gradually inside each mini-game, keeping challenges fair.',
+        'Token shop items refresh weekly with new cosmetic and bonus options.',
+        '{NAME} adds one or two new mini-games to the rotation each month.',
+        'A skip-ahead option lets returning players jump past early tutorial levels.',
+        'Offline-friendly mini-games in {NAME} sync progress once you\'re back online.',
+        'Combo scoring rewards chaining wins across multiple mini-games in a session.',
+        'Seasonal leaderboards reset monthly, giving everyone a fresh shot at the top.'
+      ],
+      vip: [
+        '{NAME} gives premium members access to high-stakes tables and priority support.',
+        'Cashback on losses and withdrawals processed within two hours are core VIP perks.',
+        'A tiered loyalty ladder runs from Bronze up to Diamond, each with added benefits.',
+        'Exclusive tournaments in {NAME} are reserved for VIP members with lighter competition.',
+        'Birthday and anniversary bonuses land automatically once you\'re a recognised {NAME} member.',
+        'A dedicated concierge line handles account and technical questions around the clock.',
+        'Higher withdrawal limits unlock as you move up the {NAME} loyalty tiers.',
+        'VIP-only tables in {NAME} carry bigger prize pools with fewer seats available.',
+        'Monthly gifts scale with your tier, from small tokens to larger cash bonuses.',
+        '{NAME} reviews VIP status quarterly based on activity, with upgrades applied automatically.',
+        'Early access to new game modes is offered to top-tier {NAME} members first.',
+        'A private support channel skips the general queue for VIP account holders.',
+        'Milestone rewards trigger at spending and play thresholds inside {NAME}.',
+        'VIP members receive a summary report of their monthly activity in {NAME}.',
+        'Table reservations let VIP players hold a seat at popular {NAME} tables in advance.',
+        'Referral bonuses are higher for members who\'ve reached VIP status in {NAME}.'
+      ],
+      casual: [
+        '{NAME} blends several game styles into one lobby so you\'re never stuck with just one mode.',
+        'Smart matchmaking pairs you with players of a similar skill level for fairer matches.',
+        'Daily login rewards in {NAME} add up to a solid bonus over a full week.',
+        'An experience-point system unlocks new perks as you level up inside {NAME}.',
+        'Clubs let players group up, chat and track shared goals within {NAME}.',
+        'Monthly updates bring new games, features and limited-time events to {NAME}.',
+        'A profile page in {NAME} tracks your stats, badges and play history.',
+        'Cross-game currency in {NAME} means rewards from one mode can be spent in another.',
+        'Seasonal events rotate every few weeks with their own missions and prizes.',
+        '{NAME} runs a light tutorial for new players covering the basics in under a minute.',
+        'Friends lists and quick-invite links make it easy to play alongside people you know.',
+        'A settings panel lets you tune notifications, sound and data usage in {NAME}.',
+        'Weekly leaderboards reset every Monday, giving everyone a clean slate in {NAME}.',
+        'Achievement badges display on your profile once specific milestones are hit.',
+        '{NAME} caches recently played modes so switching between them is instant.',
+        'A feedback option inside the app lets players suggest features directly to the {NAME} team.'
+      ]
+    };
+
+    function pickFromPool(pool, count, seed, offset) {
+      const picked = [];
+      const used = new Set();
+      let cursor = (seed + offset) % pool.length;
+      const step = 1 + (seed % 5);
+      let guard = 0;
+      while (picked.length < count && guard < pool.length * 3) {
+        guard++;
+        const idx = ((cursor % pool.length) + pool.length) % pool.length;
+        cursor += step;
+        if (used.has(idx)) continue;
+        used.add(idx);
+        picked.push(pool[idx]);
+      }
+      let extra = 0;
+      while (picked.length < count) {
+        picked.push(pool[extra % pool.length]);
+        extra++;
+      }
+      return picked;
+    }
+
+    // Builds the full, guaranteed-unique tag set (Top Offers + About) for one app.
+    function generateGameTagBlocks(game, index) {
+      if (gameTagBlocksCache[game.name]) return gameTagBlocksCache[game.name];
+
+      const gameName = game.name;
+      const nameRef = game.altName || game.name;
+      const bonus = game.bonus;
+      const withdrawal = game.withdrawal;
+      const category = classifyGameType(gameName);
+      const seed = hashSeedFrom(gameName + '|' + nameRef);
+
+      const offerPool = offerPools[category] || offerPools.casual;
+      const aboutPool = aboutPools[category] || aboutPools.casual;
+
+      const offerCount = 7 + (seed % 3);   // 7-9 offer tags (increased per request)
+      const aboutCount = 7 + (seed % 3);   // 7-9 about tags (increased per request)
+
+      const offerRaw = pickFromPool(offerPool, offerCount, seed, 0);
+      const aboutRaw = pickFromPool(aboutPool, aboutCount, seed, 7);
+
+      let nameMentionCount = 0;
+      let refCounter = 0;
+
+      const offerBlocks = offerRaw.map(function (tpl) {
+        const title = fillTokens(tpl.title, nameRef, bonus, withdrawal);
+        let content = fillTokens(tpl.content, nameRef, bonus, withdrawal);
+        refCounter++;
+        nameMentionCount += countNameMentions(title + ' ' + content, gameName, nameRef);
+        const allowName = nameMentionCount < 7;
+        const uniqueContent = makeContentUnique(content, gameName, 'o' + index + '-' + refCounter, allowName);
+        if (uniqueContent !== content) {
+          nameMentionCount += countNameMentions(uniqueContent.slice(content.length), gameName, nameRef);
+          content = uniqueContent;
+        }
+        return { title: title, content: content };
+      });
+
+      const aboutBlocks = aboutRaw.map(function (tplText) {
+        let text = fillTokens(tplText, nameRef, bonus, withdrawal);
+        refCounter++;
+        nameMentionCount += countNameMentions(text, gameName, nameRef);
+        const allowName = nameMentionCount < 7;
+        const uniqueText = makeContentUnique(text, gameName, 'a' + index + '-' + refCounter, allowName);
+        if (uniqueText !== text) {
+          nameMentionCount += countNameMentions(uniqueText.slice(text.length), gameName, nameRef);
+        }
+        return uniqueText;
+      });
+
+      // Guarantee a minimum of 4 natural name mentions across the whole section.
+      for (let i = 0; i < aboutBlocks.length && nameMentionCount < 4; i++) {
+        if (countNameMentions(aboutBlocks[i], gameName, nameRef) === 0) {
+          const revised = nameRef + ' note: ' + aboutBlocks[i].charAt(0).toLowerCase() + aboutBlocks[i].slice(1);
+          aboutBlocks[i] = revised;
+          globalUniqueTagSet.add(revised);
+          nameMentionCount++;
+        }
+      }
+
+      const layoutVariant = seed % 4; // controls visual order/alignment for this app only
+
+      const result = { offerBlocks: offerBlocks, aboutBlocks: aboutBlocks, layoutVariant: layoutVariant, category: category };
+      gameTagBlocksCache[game.name] = result;
+      return result;
+    }
+
 
     var originalTitle = document.title;
     var originalDesc = document.querySelector('meta[name="description"]').getAttribute('content');
@@ -3299,76 +4398,94 @@
     loadPageContent(disclaimerContent, 'Disclaimer.html');
 
     function loadYonoTags() {
+      renderYonoGamesInfo();
+    }
+
+    // YONO GAMES INFORMATION — grouped, non-repeating tags with a premium
+    // LED icon per group; mentions specific original app names by name.
+    function renderYonoGamesInfo() {
       const container = document.getElementById('yonoTagsContainer');
+      if (!container) return;
       container.innerHTML = '';
-      fetch('yono-games-information.html?' + Date.now())
-        .then(response => {
-          if (!response.ok) throw new Error('File not found');
-          return response.text();
-        })
-        .then(html => {
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = html;
-          const removeTags = tempDiv.querySelectorAll('script, style, link, meta, title, head, noscript, iframe, object, embed');
-          removeTags.forEach(el => el.remove());
-          let bodyContent = tempDiv.innerHTML;
-          const bodyEl = tempDiv.querySelector('body');
-          if (bodyEl) bodyContent = bodyEl.innerHTML;
-          bodyContent = bodyContent.replace(/<!--[\s\S]*?-->/g, '').trim();
-          if (!bodyContent || bodyContent.length < 2) {
-            container.innerHTML = '<span class="yono-tag" style="color:#94a3b8;background:#f1f5f9;border-color:#e2e8f0;">No tags found</span>';
-            return;
-          }
-          const wrapper = document.createElement('div');
-          wrapper.className = 'yono-custom-tags-wrapper';
-          const fragment = document.createDocumentFragment();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(bodyContent, 'text/html');
-          const nodes = doc.body ? doc.body.childNodes : doc.childNodes;
-          let hasContent = false;
-          nodes.forEach(node => {
-            if (node.nodeType === 1 || (node.nodeType === 3 && node.textContent.trim().length > 0)) {
-              const clone = node.cloneNode(true);
-              if (node.nodeType === 3) {
-                const span = document.createElement('span');
-                span.className = 'yono-tag';
-                span.textContent = node.textContent.trim();
-                if (span.textContent.length > 0) { fragment.appendChild(span); hasContent = true; }
-              } else {
-                if (clone.tagName && clone.tagName.toLowerCase() !== 'div' && clone.tagName.toLowerCase() !== 'span') {
-                  const span = document.createElement('span');
-                  span.className = 'yono-tag';
-                  span.appendChild(clone);
-                  fragment.appendChild(span);
-                  hasContent = true;
-                } else {
-                  if (!clone.className || !clone.className.includes('yono-tag')) {
-                    clone.className = clone.className ? clone.className + ' yono-tag' : 'yono-tag';
-                  }
-                  if (clone.tagName && clone.tagName.toLowerCase() === 'div') {
-                    const span = document.createElement('span');
-                    span.className = clone.className;
-                    span.innerHTML = clone.innerHTML;
-                    fragment.appendChild(span);
-                    hasContent = true;
-                  } else {
-                    fragment.appendChild(clone);
-                    hasContent = true;
-                  }
-                }
-              }
-            }
-          });
-          if (!hasContent) {
-            container.innerHTML = '<span class="yono-tag" style="color:#94a3b8;background:#f1f5f9;border-color:#e2e8f0;">No tags found</span>';
-            return;
-          }
-          wrapper.appendChild(fragment);
-          container.appendChild(wrapper);
-        })
-        .catch(() => {
-          container.innerHTML = '<span class="yono-tag" style="color:#94a3b8;background:#f1f5f9;border-color:#e2e8f0;">No tags found</span>';
+
+      const groups = [
+        {
+          title: 'Popular Games on This Platform',
+          iconColor: 'led-gold',
+          iconSvg: '<path d="M12 2l2.6 6.6L22 9l-5.4 4.6L18 22l-6-4-6 4 1.4-8.4L2 9l7.4-.4L12 2z"/>',
+          tags: [
+            'YONO NEW APP anchors the whole collection with its own referral and bonus system.',
+            'RUMMY LUDO and TOP RUMMY both run classic 13-card formats with slightly different table limits.',
+            'TEEN PATTI GOLD and TEEN PATTI MASTER offer separate joker and side-show rule variants.',
+            '567 SLOTS and SAGA SLOTS focus on themed reels with progressive jackpot rounds.',
+            'BINGO 101 is the main 75-ball/90-ball option if card-based number games are more your style.',
+            'YONO ARCADE bundles quick puzzle and reaction mini-games for shorter sessions.',
+            'SLOTS WINNER and GOOD SLOTS both run daily spin-the-wheel login bonuses.',
+            'YONO VIP groups higher-stake tables for players who\'ve outgrown entry-level rooms.'
+          ]
+        },
+        {
+          title: 'Bonus & Rewards Across Games',
+          iconColor: 'led-orange',
+          iconSvg: '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="16" r="3"/><line x1="18" y1="6" x2="6" y2="18"/>',
+          tags: [
+            'Most apps on this page list a signup bonus between ₹40 and ₹60, credited instantly after registration.',
+            'RUMMY 365 and SPIN CRUSH both run referral bonuses that unlock once a friend makes their first deposit.',
+            'Daily login streaks are common across YONO 777, JOY RUMMY and GOGO RUMMY — check each app\'s own bonus screen.',
+            'Minimum withdrawal is generally around ₹100, though the exact figure varies by app — always confirm on that app\'s own page.',
+            'Bonus chips used on practice or free tables usually cannot be withdrawn directly — read each app\'s terms first.'
+          ]
+        },
+        {
+          title: 'Formats & Game Types',
+          iconColor: 'led-cyan',
+          iconSvg: '<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>',
+          tags: [
+            'Card-based games (Rummy, Teen Patti) reward strategy and reading the table over time.',
+            'Reel and spin-based games (Slots, Spin Crush, Spin Gold) are faster, luck-driven rounds.',
+            'Number-calling games (Bingo 101) sit in between — some strategy in card selection, mostly luck in calling.',
+            'Arcade-style apps like YONO ARCADE are built around short, repeatable mini-games rather than one long match.',
+            'VIP-tier apps such as Diwa VIP and YONO VIP layer higher stakes and loyalty perks on top of the same core game types.'
+          ]
+        },
+        {
+          title: 'Staying Safe Across All Games',
+          iconColor: 'led-teal',
+          iconSvg: '<path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/>',
+          tags: [
+            'Download every app only from the official link listed on its own page here, not from unrelated third-party sites.',
+            'Never share the OTP sent to your phone with anyone, including someone claiming to represent an app\'s support team.',
+            'Real-money games on this list are intended for users 18 or older — check your local laws before registering.',
+            'Keep a personal spending limit in mind across all apps; treat any losses as final, not recoverable through further play.',
+            'If withdrawal or account issues come up, use each app\'s own in-app support channel rather than an unofficial contact.'
+          ]
+        }
+      ];
+
+      groups.forEach(function(group) {
+        const box = document.createElement('div');
+        box.className = 'yono-info-box';
+
+        const head = document.createElement('div');
+        head.className = 'yono-info-head';
+        head.innerHTML = `
+          <span class="led-badge ${group.iconColor}"><svg viewBox="0 0 24 24">${group.iconSvg}</svg></span>
+          <span>${group.title}</span>
+        `;
+        box.appendChild(head);
+
+        const body = document.createElement('div');
+        body.className = 'yono-info-body';
+        group.tags.forEach(function(t) {
+          const p = document.createElement('div');
+          p.className = 'yono-info-tag';
+          p.textContent = t;
+          body.appendChild(p);
         });
+        box.appendChild(body);
+
+        container.appendChild(box);
+      });
     }
     loadYonoTags();
 
@@ -3562,51 +4679,51 @@
       return { refBonus: refBonus, refCode: code };
     }
 
-    function generateTopOfferTags(gameName, bonus, altName) {
-      var seed = gameName.length * 7 + (gameName.charCodeAt(0) || 10);
-      var bonusNum = parseInt(bonus.replace('₹', '')) || 45;
-      var icons = [
-        '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
-        '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M6 7V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3"/><line x1="12" y1="2" x2="12" y2="7"/><path d="M8 12h8"/></svg>',
-        '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
-        '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
-      ];
-      var b1 = '₹' + (bonusNum + (seed * 3) % 50 + 10);
-      var b2 = '₹' + (bonusNum + (seed * 7) % 40 + 20);
-      var b3 = '₹' + (bonusNum + (seed * 2) % 30 + 30);
-      var b4 = '₹' + (bonusNum + (seed * 5) % 60 + 5);
-      var b5 = '₹' + (bonusNum + (seed * 11) % 45 + 15);
-      var tagTemplates = [
-        { title: function(n) { return n + ' APK – Get ' + b1 + ' Welcome Bonus!'; }, content: function(n) { return 'Play ' + n + ' and claim ' + b1 + ' instantly. Enjoy slots, rummy & more. Refer friends for extra rewards. Start winning today!'; } },
-        { title: function(n) { return 'Install ' + n + ' – ' + b2 + ' Bonus for New Users'; }, content: function(n) { return 'Download ' + n + ' APK, get ' + b2 + ' free. Play rummy, teen patti, slots. Safe withdrawals from ₹100. Join now!'; } },
-        { title: function(n) { return 'Sign Up & Claim ' + b3 + ' Bonus in ' + n; }, content: function(n) { return 'New users get ' + b3 + ' signup bonus in ' + n + '. Play 20+ games including slots and rummy. Fast payouts via UPI.'; } },
-        { title: function(n) { return n + ' – Free ' + b4 + ' Jackpot Bonus!'; }, content: function(n) { return 'Get ' + b4 + ' free bonus in ' + n + '. Daily jackpots, lucky spins and cash rewards. Install now and start earning!'; } },
-        { title: function(n) { return 'Claim ' + b5 + ' Welcome Gift on ' + n; }, content: function(n) { return 'Join ' + n + ' and receive ' + b5 + ' instant bonus. Play rummy, slots, and teen patti. Minimum withdrawal ₹100.'; } }
-      ];
-      var shuffled = tagTemplates.slice();
-      for (var i = shuffled.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = shuffled[i];
-        shuffled[i] = shuffled[j];
-        shuffled[j] = temp;
-      }
-      var iconOrder = [0,1,2,3,0,1];
-      var result = [];
-      var nameToUse = altName || gameName;
-      for (var k = 0; k < 5; k++) {
-        var tpl = shuffled[k % shuffled.length];
-        var iconIdx = iconOrder[k % iconOrder.length];
-        var titleText = tpl.title(nameToUse);
-        var contentText = tpl.content(nameToUse);
-        var extraBonus = ['₹' + (bonusNum + (seed * 13) % 30 + 10), '₹' + (bonusNum + (seed * 17) % 25 + 15)];
-        if (k % 2 === 0 && contentText.indexOf(extraBonus[0]) === -1) {
-          contentText = contentText.replace('free', extraBonus[0] + ' free');
-        } else if (k % 3 === 0 && contentText.indexOf(extraBonus[1]) === -1) {
-          contentText = contentText.replace('bonus', 'bonus including ' + extraBonus[1]);
-        }
-        result.push({ icon: icons[iconIdx % icons.length], title: titleText, content: contentText });
-      }
-      return result;
+    // PREMIUM LED ICONS — compact, pulsing-glow bonus & withdraw icons used
+    // on Home page cards, Next page "Other Related Yono Games" cards, and
+    // the detail page header row.
+    function makeBonusLedIcon(idx, prefix) {
+      prefix = prefix || '';
+      return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="${prefix}bonusLed_${idx}" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#FFF6B0"/>
+            <stop offset="45%" stop-color="#FFD600"/>
+            <stop offset="100%" stop-color="#FF8A00"/>
+          </radialGradient>
+          <linearGradient id="${prefix}bonusRibbon_${idx}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FF5278"/>
+            <stop offset="100%" stop-color="#C90035"/>
+          </linearGradient>
+        </defs>
+        <circle cx="32" cy="32" r="24" fill="url(#${prefix}bonusLed_${idx})" stroke="#FFFFFF" stroke-width="2"/>
+        <circle cx="32" cy="32" r="27" fill="none" stroke="#00FFFF" stroke-width="2" opacity="0.4"/>
+        <rect x="20" y="30" width="24" height="15" rx="2.5" fill="#ffffff"/>
+        <rect x="20" y="24" width="24" height="7" rx="2" fill="#ffffff"/>
+        <rect x="30" y="24" width="4" height="21" fill="url(#${prefix}bonusRibbon_${idx})"/>
+        <path d="M32 24c-5-7-11-4-8 1 2 3 6 1 8-1z" fill="url(#${prefix}bonusRibbon_${idx})"/>
+        <path d="M32 24c5-7 11-4 8 1-2 3-6 1-8-1z" fill="url(#${prefix}bonusRibbon_${idx})"/>
+      </svg>`;
+    }
+    function makeWithdrawLedIcon(idx, prefix) {
+      prefix = prefix || '';
+      return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="${prefix}wdLed_${idx}" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#B8FFE0"/>
+            <stop offset="45%" stop-color="#00E676"/>
+            <stop offset="100%" stop-color="#00875A"/>
+          </radialGradient>
+        </defs>
+        <circle cx="32" cy="32" r="24" fill="url(#${prefix}wdLed_${idx})" stroke="#FFFFFF" stroke-width="2"/>
+        <circle cx="32" cy="32" r="27" fill="none" stroke="#00FFFF" stroke-width="2" opacity="0.4"/>
+        <path d="M32 18L18 26h28L32 18z" fill="#ffffff"/>
+        <rect x="18" y="27" width="28" height="2.5" fill="#ffffff"/>
+        <rect x="21" y="31" width="3" height="10" fill="#ffffff"/>
+        <rect x="30.5" y="31" width="3" height="10" fill="#ffffff"/>
+        <rect x="40" y="31" width="3" height="10" fill="#ffffff"/>
+        <rect x="18" y="43" width="28" height="2.5" fill="#ffffff"/>
+      </svg>`;
     }
 
     function renderGrid() {
@@ -3620,6 +4737,7 @@
         var bonusNum = parseInt(game.bonus.replace('₹', '')) || 45;
         var metaBonus = '₹' + (bonusNum + (seed % 20) + 5);
         var version = versionNumbers[index] || '1.0';
+        var colorNum = index % numberColors.length;
 
         const card = document.createElement('div');
         card.className = 'card';
@@ -3635,115 +4753,14 @@
         card.dataset.metaBonus = metaBonus;
         card.dataset.version = version;
 
-        const giftSvg = `<svg viewBox="0 0 120 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="giftGoldX_${index}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#FFE66D"/>
-              <stop offset="50%" stop-color="#FFB300"/>
-              <stop offset="100%" stop-color="#E88900"/>
-            </linearGradient>
-            <linearGradient id="giftRedX_${index}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#FF5278"/>
-              <stop offset="100%" stop-color="#C90035"/>
-            </linearGradient>
-            <linearGradient id="moneyGreenX_${index}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#B8FFD9"/>
-              <stop offset="50%" stop-color="#00D978"/>
-              <stop offset="100%" stop-color="#008B50"/>
-            </linearGradient>
-            <linearGradient id="moneyBlueX_${index}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#B9E8FF"/>
-              <stop offset="50%" stop-color="#2196F3"/>
-              <stop offset="100%" stop-color="#0756C9"/>
-            </linearGradient>
-            <linearGradient id="moneyGoldX_${index}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#FFF2A8"/>
-              <stop offset="50%" stop-color="#FFD000"/>
-              <stop offset="100%" stop-color="#D88900"/>
-            </linearGradient>
-          </defs>
-          <g class="cash cash1">
-            <rect x="47" y="40" width="26" height="14" rx="3" fill="url(#moneyGreenX_${index})" stroke="#E8FFF2" stroke-width="1.5"/>
-            <circle cx="60" cy="47" r="4" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
-            <text x="60" y="49.5" text-anchor="middle" font-size="6" font-weight="900" fill="#FFFFFF">₹</text>
-          </g>
-          <g class="cash cash2">
-            <rect x="47" y="40" width="26" height="14" rx="3" fill="url(#moneyBlueX_${index})" stroke="#E8F7FF" stroke-width="1.5"/>
-            <circle cx="60" cy="47" r="4" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
-            <text x="60" y="49.5" text-anchor="middle" font-size="7" font-weight="900" fill="#FFFFFF">$</text>
-          </g>
-          <g class="cash cash3">
-            <rect x="47" y="40" width="26" height="14" rx="3" fill="url(#moneyGoldX_${index})" stroke="#FFFBE0" stroke-width="1.5"/>
-            <circle cx="60" cy="47" r="4" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
-            <text x="60" y="49.5" text-anchor="middle" font-size="7" font-weight="900" fill="#FFFFFF">€</text>
-          </g>
-          <rect x="25" y="62" width="70" height="50" rx="7" fill="url(#giftGoldX_${index})" stroke="#FFF1A8" stroke-width="2"/>
-          <rect x="55" y="62" width="10" height="50" rx="2" fill="url(#giftRedX_${index})"/>
-          <rect x="25" y="75" width="70" height="10" rx="2" fill="url(#giftRedX_${index})"/>
-          <g class="gift-lid-x">
-            <rect x="24" y="43" width="72" height="20" rx="5" fill="url(#giftGoldX_${index})" stroke="#FFF1A8" stroke-width="2"/>
-            <rect x="55" y="43" width="10" height="20" rx="2" fill="url(#giftRedX_${index})"/>
-            <path d="M60 43C45 31 35 35 39 43 C43 50 52 47 60 43Z" fill="url(#giftRedX_${index})"/>
-            <path d="M60 43C75 31 85 35 81 43 C77 50 68 47 60 43Z" fill="url(#giftRedX_${index})"/>
-          </g>
-          <path d="M34 91V103" stroke="#FFF8D0" stroke-width="3" stroke-linecap="round" opacity=".85"/>
-        </svg>`;
-
-        const bankSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" aria-label="Premium Bank">
-          <defs>
-            <linearGradient id="roofRainbow_${index}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#00E5FF"/>
-              <stop offset="30%" stop-color="#4169FF"/>
-              <stop offset="65%" stop-color="#9C42FF"/>
-              <stop offset="100%" stop-color="#FF3CAC"/>
-            </linearGradient>
-            <linearGradient id="buildingRainbow_${index}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#00D4FF"/>
-              <stop offset="35%" stop-color="#007BFF"/>
-              <stop offset="70%" stop-color="#6C3BFF"/>
-              <stop offset="100%" stop-color="#B51EFF"/>
-            </linearGradient>
-            <linearGradient id="goldPremium_${index}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#FFF7A8"/>
-              <stop offset="35%" stop-color="#FFD84D"/>
-              <stop offset="70%" stop-color="#FF9F1C"/>
-              <stop offset="100%" stop-color="#E05A00"/>
-            </linearGradient>
-            <linearGradient id="columnGlass_${index}" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#FFFFFF"/>
-              <stop offset="45%" stop-color="#B8F7FF"/>
-              <stop offset="100%" stop-color="#6CDEFF"/>
-            </linearGradient>
-            <filter id="premiumGlow_${index}">
-              <feGaussianBlur stdDeviation="2" result="blur"/>
-              <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <path d="M10 35L50 10L90 35Z" fill="url(#roofRainbow_${index})" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round" filter="url(#premiumGlow_${index})"/>
-          <path d="M21 31L50 14L79 31" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".75"/>
-          <rect x="14" y="34" width="72" height="48" rx="6" fill="url(#buildingRainbow_${index})" stroke="#8FEFFF" stroke-width="2.5"/>
-          <rect x="20" y="42" width="12" height="31" rx="3" fill="url(#columnGlass_${index})" stroke="#FFFFFF" stroke-width="1.5"/>
-          <rect x="44" y="42" width="12" height="31" rx="3" fill="url(#columnGlass_${index})" stroke="#FFFFFF" stroke-width="1.5"/>
-          <rect x="68" y="42" width="12" height="31" rx="3" fill="url(#columnGlass_${index})" stroke="#FFFFFF" stroke-width="1.5"/>
-          <path d="M23 45V68" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-          <path d="M47 45V68" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-          <path d="M71 45V68" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-          <rect x="8" y="75" width="84" height="10" rx="4" fill="url(#goldPremium_${index})" stroke="#FFF4A0" stroke-width="2"/>
-          <circle cx="50" cy="23" r="9" fill="url(#goldPremium_${index})" stroke="#FFF8C4" stroke-width="2" filter="url(#premiumGlow_${index})"/>
-          <text x="50" y="27" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B25B8">₹</text>
-          <path d="M12 48L16 52L12 56L8 52Z" fill="#00FFD5"/>
-          <path d="M88 48L92 52L88 56L84 52Z" fill="#FFD84D"/>
-        </svg>`;
-
-        const bonusIcon = `<span class="icon-svg">${giftSvg}</span>`;
-        const withdrawIcon = `<span class="icon-svg">${bankSvg}</span>`;
+        const bonusIcon = `<span class="icon-svg">${makeBonusLedIcon(index, 'm')}</span>`;
+        const withdrawIcon = `<span class="icon-svg">${makeWithdrawLedIcon(index, 'm')}</span>`;
 
         card.innerHTML = `
-          <div class="card-number">${index + 1}</div>
-          <div class="card-img"><img src="${game.img}" alt="${game.name}" loading="lazy" onerror="this.src='https://i.ibb.co/LXqV77rd/yono-games.jpg'"></div>
+          <div class="card-img">
+            <span class="premium-led-badge" style="background:${numberColors[colorNum]};">${index + 1}</span>
+            <img src="${game.img}" alt="${game.name}" loading="lazy" onerror="this.src='https://i.ibb.co/LXqV77rd/yono-games.jpg'">
+          </div>
           <div class="card-info">
             <div class="card-name">${game.name}</div>
             <div class="card-bonus">${bonusIcon} <span class="label">Sign Up Bonus</span> <span class="value">${game.bonus}</span></div>
@@ -3772,6 +4789,209 @@
       });
     }
     renderGrid();
+
+    // RENDER RELATED GRID - ALL 74 GAMES IN HOME PAGE STYLE
+    function renderRelatedGridHome() {
+      const relatedGridHome = document.getElementById('relatedGridHome');
+      relatedGridHome.innerHTML = '';
+      uniqueGames.forEach((game, index) => {
+        var seed = game.name.length * 7 + game.name.charCodeAt(0);
+        var ratingVal = (3 + (seed % 5) / 10).toFixed(1);
+        if (parseFloat(ratingVal) > 4.9) ratingVal = '4.8';
+        var sizeVal = apkSizes[index] || (30 + (seed % 40)) + ' MB';
+        var votesVal = Math.floor(100 + (seed * 137) % 49900);
+        var bonusNum = parseInt(game.bonus.replace('₹', '')) || 45;
+        var metaBonus = '₹' + (bonusNum + (seed % 20) + 5);
+        var version = versionNumbers[index] || '1.0';
+        var colorNum = index % numberColors.length;
+
+        const card = document.createElement('div');
+        card.className = 'card-home';
+        card.dataset.name = game.name;
+        card.dataset.altName = game.altName || game.name;
+        card.dataset.bonus = game.bonus;
+        card.dataset.withdrawal = game.withdrawal;
+        card.dataset.downloadUrl = game.downloadUrl;
+        card.dataset.img = game.img;
+        card.dataset.rating = ratingVal;
+        card.dataset.size = sizeVal;
+        card.dataset.votes = votesVal;
+        card.dataset.metaBonus = metaBonus;
+        card.dataset.version = version;
+
+        const bonusIcon = `<span class="icon-svg-home">${makeBonusLedIcon(index, 'r')}</span>`;
+        const withdrawIcon = `<span class="icon-svg-home">${makeWithdrawLedIcon(index, 'r')}</span>`;
+
+        card.innerHTML = `
+          <div class="card-img-home">
+            <span class="premium-led-badge-home" style="background:${numberColors[colorNum]};">${index + 1}</span>
+            <img src="${game.img}" alt="${game.name}" loading="lazy" onerror="this.src='https://i.ibb.co/LXqV77rd/yono-games.jpg'">
+          </div>
+          <div class="card-info-home">
+            <div class="card-name-home">${game.name}</div>
+            <div class="card-bonus-home">${bonusIcon} <span class="label">Sign Up Bonus</span> <span class="value">${game.bonus}</span></div>
+            <div class="card-withdraw-home">${withdrawIcon} <span class="label">Min. Withdraw</span> <span class="value">${game.withdrawal}</span></div>
+          </div>
+          <span class="card-download-sm-home">Download</span>
+        `;
+        relatedGridHome.appendChild(card);
+
+        card.addEventListener('click', function() {
+          const gData = {
+            name: this.dataset.name,
+            altName: this.dataset.altName,
+            bonus: this.dataset.bonus,
+            withdrawal: this.dataset.withdrawal,
+            downloadUrl: this.dataset.downloadUrl,
+            img: this.dataset.img,
+            rating: this.dataset.rating,
+            size: this.dataset.size,
+            votes: this.dataset.votes,
+            metaBonus: this.dataset.metaBonus,
+            version: this.dataset.version
+          };
+          showDetail(gData);
+        });
+      });
+    }
+
+    // 5 QUICK-FACT EXPANDABLE BOXES — re-rendered for each app, personalized
+    // with that app's own name in the first line of every box (so it isn't
+    // a pure repeated/copy block across all 74 apps), followed by the same
+    // general information tags.
+    function renderQuickFacts(game) {
+      const wrap = document.getElementById('quickFactsWrap');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      const nameRef = (game && (game.altName || game.name)) || 'This app';
+
+      const quickFactGroups = [
+        {
+          title: 'Choosing the Right Game',
+          iconColor: 'led-purple',
+          iconSvg: '<rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4"/><circle cx="16" cy="11" r="1.1"/><circle cx="18.5" cy="13.5" r="1.1"/>',
+          opener: 'Since you\'re looking at {NAME}, here\'s how to decide if it fits what you want:',
+          tags: [
+            'Match the game to your style — Rummy and Teen Patti reward strategy, while Slots and Bingo are quicker, luck-based rounds.',
+            'Start on low buy-in tables to learn the interface before moving to higher stakes.',
+            'Check each app\'s bonus and minimum withdrawal amount before you commit to one platform.',
+            'Read {NAME}\'s "About" tags first — they cover formats, table types and unique features.',
+            'Try the free/practice tables where available so you understand the rules with zero risk.',
+            'Compare APK size and version listed on this page if your phone storage is limited.'
+          ]
+        },
+        {
+          title: 'Deposit & Withdrawal Basics',
+          iconColor: 'led-gold',
+          iconSvg: '<path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1h-4a2 2 0 1 0 0 4h5"/>',
+          opener: 'For {NAME} specifically, keep these payout basics in mind:',
+          tags: [
+            'Most apps process UPI withdrawals within a few hours once KYC is complete.',
+            'Keep your registered mobile number and bank/UPI ID consistent to avoid payout delays.',
+            'Minimum withdrawal amounts differ per app — check the figure shown on {NAME}\'s page before playing.',
+            'Screenshot your transaction ID whenever you deposit or withdraw, for your own records.',
+            'Avoid third-party payment links; always use the in-app deposit/withdraw option.',
+            'Large withdrawals may take slightly longer due to standard verification checks.'
+          ]
+        },
+        {
+          title: 'Account & Login Safety',
+          iconColor: 'led-red',
+          iconSvg: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><rect x="15" y="14" width="7" height="6" rx="1"/><path d="M16.5 14v-1.5a1.5 1.5 0 0 1 3 0V14"/>',
+          opener: 'Before you sign in to {NAME}, a few safety reminders:',
+          tags: [
+            'Never share the OTP sent to your phone with anyone, including someone claiming to be support.',
+            'Use a strong, unique password rather than reusing one from another app.',
+            'Log out of shared or public devices after playing.',
+            'Enable app lock or device-level security if you keep {NAME} installed long-term.',
+            'Report suspicious messages claiming to be from the game\'s support team.',
+            'Re-verify your KYC promptly if an app requests it — this protects your withdrawals.'
+          ]
+        },
+        {
+          title: 'Bonus & Referral Tips',
+          iconColor: 'led-orange',
+          iconSvg: '<circle cx="12" cy="12" r="10"/><path d="M12 6v2M12 16v2M8 12H6M18 12h-2"/><circle cx="12" cy="12" r="3"/>',
+          opener: '{NAME}\'s bonus and referral system works similar to this:',
+          tags: [
+            'Welcome bonuses are usually credited instantly but may have wagering conditions — check in-app terms.',
+            'Referral rewards typically unlock after your friend completes their first deposit.',
+            'Daily login streaks often add up to more than a one-time signup bonus over a month.',
+            'Some apps run limited-time bonus multipliers — keep an eye on the notifications tab.',
+            'Bonus chips used for practice tables usually can\'t be withdrawn directly.',
+            'Track your referral code performance from the Refer & Earn section of {NAME}.'
+          ]
+        },
+        {
+          title: 'Getting Help & Support',
+          iconColor: 'led-teal',
+          iconSvg: '<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>',
+          opener: 'Need help while using {NAME}? Start here:',
+          tags: [
+            'Use the in-app chat support first — it\'s usually the fastest way to resolve payout questions.',
+            'Keep your transaction ID ready when contacting support about a delayed withdrawal.',
+            'Check the FAQ/How to Download section on this page before installing if you hit an error.',
+            'Update the app regularly so you always have the latest bug fixes and features.',
+            'If an APK fails to install, confirm "unknown sources" is enabled in your phone settings.',
+            'For account-specific issues, always use the official support contact listed inside {NAME}.'
+          ]
+        }
+      ];
+
+
+      quickFactGroups.forEach(function(group, gi) {
+        const box = document.createElement('div');
+        box.className = 'quick-fact-box';
+
+        const head = document.createElement('div');
+        head.className = 'quick-fact-head';
+        head.innerHTML = `
+          <span class="led-badge ${group.iconColor}"><svg viewBox="0 0 24 24">${group.iconSvg}</svg></span>
+          <span>${group.title}</span>
+        `;
+        box.appendChild(head);
+
+        const body = document.createElement('div');
+        body.className = 'quick-fact-body';
+
+        // Personalized opener line — includes this specific app's name,
+        // so the box isn't a pure duplicate/copy across all 74 apps.
+        if (group.opener) {
+          const openerEl = document.createElement('div');
+          openerEl.className = 'quick-fact-tag';
+          openerEl.style.fontWeight = '700';
+          openerEl.style.color = '#0f766e';
+          openerEl.textContent = group.opener.split('{NAME}').join(nameRef);
+          body.appendChild(openerEl);
+        }
+
+        const visibleCount = 3;
+        group.tags.forEach(function(tagTextRaw, ti) {
+          const tagText = tagTextRaw.split('{NAME}').join(nameRef);
+          const p = document.createElement('div');
+          p.className = 'quick-fact-tag' + (ti >= visibleCount ? ' qf-hidden' : '');
+          p.textContent = tagText;
+          body.appendChild(p);
+        });
+
+        if (group.tags.length > visibleCount) {
+          const toggle = document.createElement('span');
+          toggle.className = 'quick-fact-toggle';
+          toggle.textContent = 'Show more tags ▾';
+          toggle.addEventListener('click', function() {
+            const hiddenTags = body.querySelectorAll('.qf-hidden');
+            const isExpanded = toggle.dataset.expanded === '1';
+            hiddenTags.forEach(function(t) { t.classList.toggle('qf-hidden', isExpanded); });
+            toggle.dataset.expanded = isExpanded ? '0' : '1';
+            toggle.textContent = isExpanded ? 'Show more tags ▾' : 'Show less ▴';
+          });
+          body.appendChild(toggle);
+        }
+
+        box.appendChild(body);
+        wrap.appendChild(box);
+      });
+    }
 
     function showDetail(game, fromBack) {
       document.title = game.name + ' – Download ' + game.name + ' APK | YONO NEW APP';
@@ -3805,12 +5025,29 @@
       const appNameAbout = document.getElementById('appNameAbout');
       if (appNameAbout) appNameAbout.textContent = game.name;
 
+      // Update Download & Install section with game name
+      const downloadGameName = document.getElementById('downloadGameName');
+      if (downloadGameName) downloadGameName.textContent = game.name;
+
       const downloadBtn = document.getElementById('detailDownloadBtn');
       downloadBtn.onclick = function(e) {
         e.preventDefault();
         window.open(game.downloadUrl, '_blank');
         return false;
       };
+
+      // Sticky scroll-triggered download bar — same link, resets visibility
+      // on every new app view (fixes it staying wrongly shown/hidden after
+      // clicking an app from "Other Related Yono Games")
+      const downloadBtnSticky = document.getElementById('detailDownloadBtnSticky');
+      if (downloadBtnSticky) {
+        downloadBtnSticky.onclick = function(e) {
+          e.preventDefault();
+          window.open(game.downloadUrl, '_blank');
+          return false;
+        };
+        downloadBtnSticky.classList.remove('visible');
+      }
       document.getElementById('apkBonusLine').textContent = game.bonus;
 
       var refData = generateReferralData(game.name, game.bonus);
@@ -3823,114 +5060,110 @@
       linkUrl.textContent = 'https://www.earntp.com/m/jm9n7r';
 
       // ==============================================================
-      // UNIQUE TAG SECTION — "About" tags below Top Offers
+      // UNIFIED TAG SECTION — Top Offers + About, 100% unique per app,
+      // with per-app layout/position variation (dynamic system)
       // ==============================================================
       const tagContainer = document.getElementById('tagGridContainer');
       tagContainer.innerHTML = '';
 
-      // 1) Top Offers (existing)
-      var tagItems = generateTopOfferTags(game.name, game.bonus, game.altName);
-      tagItems.forEach(function(item) {
-        var box = document.createElement('div');
-        box.className = 'tag-box';
-        box.innerHTML = `
-          <div class="tag-head">
-            <span class="svg-icon">${item.icon}</span>
-            <span>${item.title}</span>
-          </div>
-          <div class="tag-content">${item.content}</div>
-        `;
-        tagContainer.appendChild(box);
-      });
+      const gIndexForTags = games.findIndex(function(g) { return g.name === game.name; });
+      const tagData = generateGameTagBlocks(game, gIndexForTags >= 0 ? gIndexForTags : 0);
+      const variant = tagData.layoutVariant; // 0-3, unique-per-app derived, drives visual order/alignment
 
-      // 2) Unique "About" tags for this specific game — Text Only, no icons/SVGs
-      const uniqueTags = generateUniqueTags(game.name, game.altName || game.name, game.bonus);
+      function buildOfferGroupBox(offerBlocks, borderSide, alignMode) {
+        // NOTE: The page already has a static "Top Offers" title + green
+        // border wrapper around #tagGridContainer, so this box must NOT add
+        // its own header or border (that caused a duplicate "Top Offers" label).
+        const offerBox = document.createElement('div');
+        offerBox.className = 'tag-box';
+        offerBox.style.border = 'none';
+        offerBox.style.background = 'transparent';
+        offerBox.style.boxShadow = 'none';
+        offerBox.style.padding = '2px 0';
 
-      // Create a clean tag-box with text-only tags
-      const aboutBox = document.createElement('div');
-      aboutBox.className = 'tag-box';
-      aboutBox.style.borderColor = '#2563eb';
-      aboutBox.style.borderLeft = '4px solid #2563eb';
+        offerBlocks.forEach((item, idx) => {
+          const wrap = document.createElement('div');
+          wrap.style.marginBottom = (idx < offerBlocks.length - 1) ? '10px' : '0';
+          if (alignMode) wrap.style.textAlign = alignMode;
 
-      const aboutHead = document.createElement('div');
-      aboutHead.className = 'tag-head';
-      aboutHead.innerHTML = `
-        <span class="svg-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="16" x2="12" y2="12"/>
-            <line x1="12" y1="8" x2="12.01" y2="8"/>
-          </svg>
-        </span>
-        <span style="color:#2563eb;">About ${game.name}</span>
-      `;
-      aboutBox.appendChild(aboutHead);
+          const titleEl = document.createElement('p');
+          titleEl.style.margin = '0 0 3px 0';
+          titleEl.style.paddingLeft = '6px';
+          titleEl.style.fontSize = '0.74rem';
+          titleEl.style.fontWeight = '700';
+          titleEl.style.color = '#15803d';
+          titleEl.textContent = item.title;
+          wrap.appendChild(titleEl);
 
-      // Add the unique tags as text paragraphs
-      uniqueTags.forEach((tagText, idx) => {
-        const p = document.createElement('p');
-        p.className = 'tag-content';
-        p.style.marginBottom = (idx < uniqueTags.length - 1) ? '8px' : '0';
-        p.style.paddingLeft = '6px';
-        p.style.fontSize = '0.72rem';
-        p.style.color = '#1e293b';
-        p.style.lineHeight = '1.65';
-        p.textContent = tagText;
-        aboutBox.appendChild(p);
-      });
+          const contentEl = document.createElement('p');
+          contentEl.className = 'tag-content';
+          contentEl.style.margin = '0';
+          contentEl.style.paddingLeft = '6px';
+          contentEl.style.fontSize = '0.72rem';
+          contentEl.style.color = '#1e293b';
+          contentEl.style.lineHeight = '1.65';
+          contentEl.textContent = item.content;
+          wrap.appendChild(contentEl);
 
-      tagContainer.appendChild(aboutBox);
-
-      var relatedGrid = document.getElementById('relatedGrid');
-      relatedGrid.innerHTML = '';
-      uniqueGames.filter(g => g.name !== game.name).forEach(function(g) {
-        var item = document.createElement('div');
-        item.className = 'related-item';
-        var seed3 = g.name.length * 7 + g.name.charCodeAt(0);
-        var r = (3 + (seed3 % 5) / 10).toFixed(1);
-        if (parseFloat(r) > 4.9) r = '4.8';
-        var s = apkSizes[uniqueGames.indexOf(g)] || (30 + (seed3 % 40)) + ' MB';
-        var v = Math.floor(100 + (seed3 * 137) % 49900);
-        var mb = '₹' + ((parseInt(g.bonus.replace('₹','')) || 45) + (seed3 % 20) + 5);
-        var ver = versionNumbers[uniqueGames.indexOf(g)] || '1.0';
-        item.dataset.name = g.name;
-        item.dataset.altName = g.altName || g.name;
-        item.dataset.bonus = g.bonus;
-        item.dataset.withdrawal = g.withdrawal;
-        item.dataset.downloadUrl = g.downloadUrl;
-        item.dataset.img = g.img;
-        item.dataset.rating = r;
-        item.dataset.size = s;
-        item.dataset.votes = v;
-        item.dataset.metaBonus = mb;
-        item.dataset.version = ver;
-
-        const relatedGiftSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" style="display:block; width:100%; height:100%;"><path d="M12 6.5c-1-1.5-3-2.5-4.5-1s-.5 3.5 1.5 4.5 3-2 3-2 1.5 3 3 2 2-3 1.5-4.5-3.5-.5-4.5 1z" fill="#FFD700"/><rect x="3" y="8" width="18" height="3" rx="1" fill="#D32F2F"/><rect x="4" y="11" width="16" height="10" rx="1" fill="#F44336"/><rect x="11" y="8" width="2" height="13" fill="#FFD700"/><rect x="3" y="9" width="18" height="1" fill="#FFD700"/></svg>`;
-        const relatedBankSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" style="display:block; width:100%; height:100%;"><path d="M2 10L12 3L22 10H2Z" fill="#1b5e20"/><path d="M12 3L22 10H2L12 3Z" stroke="#ffd700" stroke-width="0.5" fill="none"/><rect x="4" y="11" width="2" height="8" fill="#2e7d32"/><rect x="9" y="11" width="2" height="8" fill="#2e7d32"/><rect x="14" y="11" width="2" height="8" fill="#2e7d32"/><rect x="18" y="11" width="2" height="8" fill="#2e7d32"/><rect x="2" y="19" width="20" height="2" fill="#1b5e20"/></svg>`;
-
-        const relatedBonusIcon = `<span style="display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:14px; height:14px;">${relatedGiftSvg}</span>`;
-        const relatedWithdrawIcon = `<span style="display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:14px; height:14px;">${relatedBankSvg}</span>`;
-
-        item.innerHTML = `
-          <img src="${g.img}" alt="${g.name}" loading="lazy" onerror="this.src='https://i.ibb.co/LXqV77rd/yono-games.jpg'">
-          <div class="rinfo">
-            <div class="rname">${g.name} <span class="alt">| ${g.altName}</span></div>
-            <div class="rbonus">${relatedBonusIcon} Sign Up Bonus ${g.bonus}</div>
-            <div class="rwithdraw">${relatedWithdrawIcon} Min. Withdraw ${g.withdrawal}</div>
-          </div>
-          <span class="rdownload">
-            <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download
-          </span>
-        `;
-        relatedGrid.appendChild(item);
-
-        item.addEventListener('click', function(e) {
-          e.stopPropagation();
-          var gData = gameDataMap[this.dataset.name];
-          if (gData) showDetail(gData);
+          offerBox.appendChild(wrap);
         });
-      });
+
+        return offerBox;
+      }
+
+      function buildAboutBox(aboutTags, borderSide, alignMode) {
+        const aboutBox = document.createElement('div');
+        aboutBox.className = 'tag-box';
+        aboutBox.style.borderColor = '#2563eb';
+        if (borderSide === 'top') {
+          aboutBox.style.borderTop = '4px solid #2563eb';
+        } else {
+          aboutBox.style.borderLeft = '4px solid #2563eb';
+        }
+
+        const aboutHead = document.createElement('div');
+        aboutHead.className = 'tag-head';
+        aboutHead.innerHTML = `
+          <span class="led-badge led-blue" style="display:inline-flex;">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </span>
+          <span style="color:#2563eb;">About ${game.name}</span>
+        `;
+        aboutBox.appendChild(aboutHead);
+
+        aboutTags.forEach((tagText, idx) => {
+          const p = document.createElement('p');
+          p.className = 'tag-content';
+          p.style.marginBottom = (idx < aboutTags.length - 1) ? '8px' : '0';
+          p.style.paddingLeft = '6px';
+          p.style.fontSize = '0.72rem';
+          p.style.color = '#1e293b';
+          p.style.lineHeight = '1.65';
+          if (alignMode) p.style.textAlign = alignMode;
+          p.textContent = tagText;
+          aboutBox.appendChild(p);
+        });
+
+        return aboutBox;
+      }
+
+      // Fixed structure for every app: ONE "Top Offers" box (green border, all
+      // offer tags inside), then exactly ONE "About [Name]" box (blue border,
+      // all game-information tags inside) — always in this order, for all 74 apps.
+      // Alignment is always consistent (left) — no left/right/justify variation,
+      // only the border accent side varies slightly per app.
+      const offerList = tagData.offerBlocks;
+      const offerBorderSide = (variant === 1 || variant === 2) ? 'top' : 'left';
+      tagContainer.appendChild(buildOfferGroupBox(offerList, offerBorderSide, null));
+
+      const aboutBorderSide = (variant === 1 || variant === 2) ? 'top' : 'left';
+      tagContainer.appendChild(buildAboutBox(tagData.aboutBlocks, aboutBorderSide, null));
+
+      renderQuickFacts(game);
 
       showDetailView();
       hideAllNavActive();
@@ -4013,6 +5246,9 @@
     history.replaceState({ state: { page: 'home' } }, 'Home', location.href);
     enableHomeHeader();
 
+    // Render the related grid
+    renderRelatedGridHome();
+
     // Menu functionality
     const menuBtn = document.getElementById('menuBtn');
     const menuDropdown = document.getElementById('menuDropdown');
@@ -4038,6 +5274,48 @@
         else if (page === 'disclaimer') disclaimerNav.click();
       });
     });
+  })();
+
+  // ==============================================================
+  // SCROLL-TRIGGERED UI: Download button reveal (Next page) +
+  // floating Scroll-to-Top icon (Home page & Next page)
+  // ==============================================================
+  (function() {
+    const fab = document.getElementById('scrollTopFab');
+    const SHOW_AFTER_PX = 220;
+    const detailViewEl = document.getElementById('detailView');
+
+    function updateOnScroll() {
+      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      const revealed = y > SHOW_AFTER_PX;
+      const inDetailView = detailViewEl && detailViewEl.classList.contains('show');
+
+      // Floating scroll-to-top icon: hidden at top, shown once user scrolls down
+      if (fab) {
+        fab.classList.toggle('visible', revealed);
+        // Lift the icon above the sticky download bar so they never overlap
+        fab.classList.toggle('fab-raised', revealed && inDetailView);
+      }
+
+      // The ORIGINAL "Download APK" button above Top Offers stays in its old
+      // position and is always visible — no scroll control on it anymore.
+      // Only the separate STICKY bar (bottom-center) reveals on scroll, and
+      // only while an app's detail page is open.
+      const dlSticky = document.getElementById('detailDownloadBtnSticky');
+      if (dlSticky) {
+        dlSticky.classList.toggle('visible', revealed && inDetailView);
+      }
+    }
+
+    window.addEventListener('scroll', updateOnScroll, { passive: true });
+    window.addEventListener('resize', updateOnScroll, { passive: true });
+    updateOnScroll();
+
+    if (fab) {
+      fab.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
   })();
 </script>
 </body>
